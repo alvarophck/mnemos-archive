@@ -1,0 +1,16 @@
+# Mnemos Archive · Caddy como puente HTTPS hacia Ollama
+#
+# SQL Server 2025 solo llama a modelos y endpoints por HTTPS.
+# Ollama escucha por HTTP en el puerto 11434.
+# Caddy publica https://localhost:11435 con un certificado de su
+# autoridad local ("tls internal") y reenvía cada petición a Ollama.
+#
+# Arrancar (desde la raíz del repositorio):
+#   caddy run --config ai\caddy\Caddyfile
+
+https://localhost:11435 {
+	tls internal
+	reverse_proxy localhost:11434 {
+		header_up Host localhost:11434
+	}
+}
