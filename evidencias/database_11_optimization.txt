@@ -1834,7 +1834,7 @@ Tabla "Worktable". N├║mero de examen 0, lecturas l├│gicas 0, lecturas f�
 Tabla "documentos". N├║mero de examen 1, lecturas l├│gicas 4511, lecturas f├¡sicas 0, lecturas de servidor de p├íginas 0, lecturas anticipadas 0, lecturas anticipadas de servidor de p├íginas 0, lecturas l├│gicas de l├¡nea de negocio 0, lecturas f├¡sicas de l├¡nea de negocio 0, lecturas de servidor de p├íginas de l├¡nea de negocio 0, lecturas anticipadas de l├¡nea de negocio 0, lecturas anticipadas de servidor de p├íginas de l├¡nea de negocio 0.
 
  Tiempos de ejecuci├│n de SQL Server:
-   Tiempo de CPU = 94 ms, tiempo transcurrido = 151 ms.
+   Tiempo de CPU = 31 ms, tiempo transcurrido = 71 ms.
 Tiempo de an├ílisis y compilaci├│n de SQL Server: 
    Tiempo de CPU = 0 ms, tiempo transcurrido = 0 ms.
 documento_id numero fecha_documento importe_total
@@ -3668,10 +3668,10 @@ documento_id numero fecha_documento importe_total
 Tabla "documentos". N├║mero de examen 1, lecturas l├│gicas 17, lecturas f├¡sicas 0, lecturas de servidor de p├íginas 0, lecturas anticipadas 0, lecturas anticipadas de servidor de p├íginas 0, lecturas l├│gicas de l├¡nea de negocio 0, lecturas f├¡sicas de l├¡nea de negocio 0, lecturas de servidor de p├íginas de l├¡nea de negocio 0, lecturas anticipadas de l├¡nea de negocio 0, lecturas anticipadas de servidor de p├íginas de l├¡nea de negocio 0.
 
  Tiempos de ejecuci├│n de SQL Server:
-   Tiempo de CPU = 0 ms, tiempo transcurrido = 69 ms.
+   Tiempo de CPU = 0 ms, tiempo transcurrido = 41 ms.
 consulta last_logical_reads last_ms
 -------- ------------------ -------
 SELECT documento_id, numero, fecha_documento, importe_total
-FROM archivo.docume 17 69.348000
+FROM archivo.docume 17 41.725000
 
 Hist├│rico sint├®tico eliminado. El ├¡ndice IX_documentos_tercero_fecha se mantiene.

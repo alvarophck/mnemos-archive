@@ -1,0 +1,11 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+dimensiones tipo_base primeros_valores
+----------- --------- ----------------
+1024 float32 [-7.1889274e-002,-2.7520422e-002,-4.5599893e-002,7.2396607e-003,-1.2912576e-002,2.8945245e-002,-3.8751308e-003,4.6993298 ...
+
+(1 row affected)
+distancia_misma_idea distancia_otra_idea
+-------------------- -------------------
+0.22894197702407837 0.5153208374977112
+
+(1 row affected)

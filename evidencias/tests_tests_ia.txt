@@ -1,0 +1,66 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+OK  1 modelo de embeddings (1024 dimensiones)
+OK  2 todos los fragmentos vectorizados
+OK  3 b├║squeda sem├íntica
+OK  4 clasificaci├│n y enlace con el tercero
+1_pregunta
+----------
+┬┐Qu├® penalizaci├│n hay si se entrega tarde la se├▒al├®tica?
+
+2_fuente archivo pagina similitud fragmento
+-------- ------- ------ --------- ---------
+1 contrato-senaletica-vallecas.pdf 1 0.5813 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+ [p├ígina 2]
+ Cl├íusula 3. Penalizaci├│n: por cada s
+2 contrato-senaletica-vallecas.pdf 1 0.5284 CONTRATO DE PRESTACI├ôN DE SERVICIOS DE DISE├æO
+ N┬║ CS-2026-003 ┬À Madrid, 20 de febrero de 2026
+ Cliente: Construcciones V
+3 presupuesto-vallecas-fase2.pdf 1 0.5176 PRESUPUESTO P-2026-024 ┬À 01/10/2026
+ De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+ Fase 2 de se├▒al├®tica: 
+4 factura-2026-022.pdf 1 0.4759 FACTURA N┬║ 2026-022
+ Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+ Cliente: Construcciones Vallecas S.A. ┬À NIF A28765432
+ 
+
+3_contexto_enviado_al_modelo
+----------------------------
+[1] contrato-senaletica-vallecas.pdf ┬À p. 1
+entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+[p├ígina 2]
+Cl├íusula 3. Penalizaci├│n: por cada semana de retraso en la entrega se descontar├í un 2 % del precio, hasta un m├íximo del 10 %.
+C
+
+4_respuesta modelo milisegundos
+----------- ------ ------------
+Por cada semana de retraso en la entrega se descontar├í un 2 % del precio, hasta un m├íximo del 10 % [1]. qwen3:4b-instruct 5137
+
+OK  5 RAG con trazabilidad
+1_pregunta
+----------
+┬┐Con cu├ínto tiempo de antelaci├│n tengo que avisar si quiero dejar la oficina?
+
+2_fuente archivo pagina similitud fragmento
+-------- ------- ------ --------- ---------
+1 presupuesto-vallecas-fase2.pdf 1 0.4484 PRESUPUESTO P-2026-024 ┬À 01/10/2026
+ De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+ Fase 2 de se├▒al├®tica: 
+2 presupuesto-cafe-malasana-web.pdf 1 0.4193 PRESUPUESTO P-2026-019 ┬À 02/09/2026
+ De: Estudio ├ümbar S.L. ┬À Para: Caf├® Malasa├▒a S.L.
+ Proyecto: tienda online de caf├® 
+
+3_contexto_enviado_al_modelo
+----------------------------
+[1] presupuesto-vallecas-fase2.pdf ┬À p. 1
+PRESUPUESTO P-2026-024 ┬À 01/10/2026
+De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+Fase 2 de se├▒al├®tica: dise├▒o de la se├▒alizaci├│n interior de 3 edificios de viviendas y planos de evacuaci├│n.
+Plazo:
+
+4_respuesta modelo milisegundos
+----------- ------ ------------
+No lo encuentro en los documentos. qwen3:4b-instruct 1136
+
+OK  6 RAG filtrado por permisos
+ 
+Pruebas de IA superadas.

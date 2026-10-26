@@ -7,7 +7,7 @@
        -> búsqueda vectorial en SQL Server (VECTOR_DISTANCE coseno)
        -> fragmentos relevantes + datos verificados de esos documentos
        -> contexto numerado [1], [2]...
-       -> LLM local (qwen3:4b) con la orden de usar SOLO ese contexto
+       -> LLM local (qwen3:4b-instruct) con la orden de usar SOLO ese contexto
        -> respuesta que cita [n] = archivo · página
 
    El procedimiento devuelve por separado, como pide el enunciado:

@@ -1,0 +1,6 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+respuesta_modelo milisegundos
+---------------- ------------
+Una factura es un documento que certifica la entrega de un producto o servicio y que indica el monto que se debe pagar por ├®l. 6994
+
+(1 row affected)

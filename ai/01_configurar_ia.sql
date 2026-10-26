@@ -9,7 +9,9 @@
 
    Modelos (licencias permisivas, se ejecutan en local):
      bge-m3    -> embeddings, 1024 dimensiones, multilingüe (MIT)
-     qwen3:4b  -> modelo de lenguaje para extraer campos y responder (Apache 2.0)
+     qwen3:4b-instruct -> modelo de lenguaje para extraer campos y responder (Apache 2.0)
+                          (no qwen3:4b: esa etiqueta es la versión que razona antes
+                          de responder y tarda varios minutos por pregunta)
    ===================================================================== */
 SET ANSI_NULLS ON;
 SET QUOTED_IDENTIFIER ON;
@@ -38,7 +40,7 @@ CREATE TABLE archivo.config_ia
 INSERT INTO archivo.config_ia (clave, valor, nota) VALUES
 ('url_chat',          N'https://localhost:11435/api/chat',  N'Ollama /api/chat detrás de Caddy (HTTPS)'),
 ('url_embed',         N'https://localhost:11435/api/embed', N'Ollama /api/embed; lo usa CREATE EXTERNAL MODEL'),
-('modelo_llm',        N'qwen3:4b',  N'Para equipos con poca memoria: qwen3:1.7b'),
+('modelo_llm',        N'qwen3:4b-instruct', N'Variante sin razonamiento visible: responde directamente'),
 ('modelo_embeddings', N'bge-m3',    N'Si se cambia, hay que cambiar también vector(1024) y regenerar los embeddings'),
 ('tamano_fragmento',  N'500',       N'Caracteres por fragmento (AI_GENERATE_CHUNKS)'),
 ('solape_fragmento',  N'15',        N'Porcentaje de solape entre fragmentos');

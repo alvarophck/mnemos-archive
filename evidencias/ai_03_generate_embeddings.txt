@@ -1,0 +1,33 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+Fragmentos nuevos: 24
+Documentos vectorizados: 22 ┬À con error: 0
+fragmento_id nombre_archivo orden pagina fragmento dimensiones modelo
+------------ -------------- ----- ------ --------- ----------- ------
+2 factura-2026-014.pdf 1 1 FACTURA N┬║ 2026-014
+Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674 ┬À Call... 1024 bge-m3
+3 factura-2026-031.pdf 1 1 FACTURA N┬║ 2026-031
+Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+Clien... 1024 bge-m3
+4 factura-2026-048.pdf 1 1 FACTURA N┬║ 2026-048
+Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+Clien... 1024 bge-m3
+5 factura-2026-022.pdf 1 1 FACTURA N┬║ 2026-022
+Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+Clien... 1024 bge-m3
+6 factura-2026-037.pdf 1 1 FACTURA N┬║ 2026-037
+Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+Clien... 1024 bge-m3
+7 factura-2026-041.pdf 1 1 FACTURA N┬║ 2026-041
+Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+Clien... 1024 bge-m3
+8 arganzuela-hosting-enero.pdf 1 1 Tecnolog├¡as Arganzuela S.L. ┬À NIF B84512367
+FACTURA TA-26-0107 ┬À Fech... 1024 bge-m3
+9 arganzuela-hosting-febrero.pdf 1 1 Tecnolog├¡as Arganzuela S.L. ┬À NIF B84512367
+FACTURA TA-26-0219 ┬À Fech... 1024 bge-m3
+
+(8 rows affected)
+fragmentos con_vector
+---------- ----------
+24 24
+
+(1 row affected)

@@ -4,10 +4,10 @@
 
 | Componente | Papel | Dónde |
 |---|---|---|
-| SQL Server 2025 | Datos, lógica, seguridad, vectores y orquestación de la IA | Instancia local `.\SQL2025` |
+| SQL Server 2025 | Datos, lógica, seguridad, vectores y orquestación de la IA | Instancia local (`.\SQL2025` o `localhost`) |
 | Ollama | Ejecuta los modelos | `http://localhost:11434` |
 | bge-m3 | Embeddings de 1024 dimensiones, multilingüe | Ollama |
-| qwen3:4b | Clasificación, extracción de campos y respuestas RAG | Ollama |
+| qwen3:4b-instruct | Clasificación, extracción de campos y respuestas RAG | Ollama |
 | Caddy | Expone Ollama por HTTPS, que es lo único que acepta SQL Server | `https://localhost:11435` |
 
 Nada sale del ordenador.
@@ -66,7 +66,7 @@ Texto del documento
    │  usp_archivar_documento        hash SHA-256: si ya existe, no se duplica
    ▼
 documentos (tipo = sin_clasificar)
-   │  usp_clasificar_y_extraer      qwen3:4b + JSON Schema -> JSON
+   │  usp_clasificar_y_extraer      qwen3:4b-instruct + JSON Schema -> JSON
    │                                T-SQL valida: tipos, fecha, base + IVA = total
    │                                fn_buscar_tercero: NIF o nombre aproximado (Jaro-Winkler)
    ▼
@@ -89,7 +89,7 @@ vector(1024)
 top-k fragmentos (distancia <= 0,60)
    │  contexto numerado [1] archivo · p. N  +  datos verificados (SQL)
    ▼
-qwen3:4b vía sp_invoke_external_rest_endpoint
+qwen3:4b-instruct vía sp_invoke_external_rest_endpoint
    │  "usa solo el contexto, cita [n], si no está di que no lo encuentras"
    ▼
 Respuesta con citas  ──► consultas_rag (pregunta, documentos, contexto, respuesta, tiempo)

@@ -12,6 +12,9 @@
 
    Requiere la característica "Búsqueda de texto completo" instalada.
    Si no lo está, el procedimiento usa solo la búsqueda vectorial y lo dice.
+   Para detectarla se busca el servicio fdlauncher.exe: FULLTEXTSERVICEPROPERTY
+   puede decir que está instalada cuando falta el servicio, y el error 7609
+   que se produce entonces no se puede capturar con TRY/CATCH.
    ===================================================================== */
 SET ANSI_NULLS ON;
 SET QUOTED_IDENTIFIER ON;
@@ -21,14 +24,16 @@ GO
 
 BEGIN TRY
     IF FULLTEXTSERVICEPROPERTY('IsFullTextInstalled') = 1
+       AND EXISTS (SELECT 1 FROM sys.dm_server_services WHERE filename LIKE N'%fdlauncher%')
     BEGIN
+        -- SQL dinámico: sin el servicio, estas sentencias fallan ya al compilar el lote
         IF NOT EXISTS (SELECT 1 FROM sys.fulltext_catalogs WHERE name = 'catalogo_mnemos')
-            CREATE FULLTEXT CATALOG catalogo_mnemos;
+            EXEC (N'CREATE FULLTEXT CATALOG catalogo_mnemos;');
 
         IF NOT EXISTS (SELECT 1 FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('archivo.fragmentos'))
-            CREATE FULLTEXT INDEX ON archivo.fragmentos (texto LANGUAGE 3082)   -- 3082 = español
-                KEY INDEX PK_fragmentos ON catalogo_mnemos
-                WITH CHANGE_TRACKING AUTO;
+            EXEC (N'CREATE FULLTEXT INDEX ON archivo.fragmentos (texto LANGUAGE 3082)   -- 3082 = español
+                    KEY INDEX PK_fragmentos ON catalogo_mnemos
+                    WITH CHANGE_TRACKING AUTO;');
 
         PRINT 'Índice de texto completo listo (se rellena en segundo plano unos segundos).';
     END

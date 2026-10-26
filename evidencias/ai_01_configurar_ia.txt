@@ -1,0 +1,19 @@
+﻿Se cambi├│ el contexto de la base de datos a 'master'.
+Se ha cambiado la opci├│n de configuraci├│n 'external rest endpoint enabled' de 1 a 1. Ejecute la instrucci├│n RECONFIGURE para instalar.
+Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+(6 rows affected)
+name value_in_use
+---- ------------
+external rest endpoint enabled 1
+
+(1 row affected)
+clave valor nota
+----- ----- ----
+modelo_embeddings bge-m3 Si se cambia, hay que cambiar tambi├®n vector(1024) y regenerar los embeddings
+modelo_llm qwen3:4b-instruct Variante sin razonamiento visible: responde directamente
+solape_fragmento 15 Porcentaje de solape entre fragmentos
+tamano_fragmento 500 Caracteres por fragmento (AI_GENERATE_CHUNKS)
+url_chat https://localhost:11435/api/chat Ollama /api/chat detr├ís de Caddy (HTTPS)
+url_embed https://localhost:11435/api/embed Ollama /api/embed; lo usa CREATE EXTERNAL MODEL
+
+(6 rows affected)

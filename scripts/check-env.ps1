@@ -14,7 +14,7 @@
   Ollama embedding model to look for. Default: bge-m3.
 
 .PARAMETER LlmModel
-  Ollama language model to look for. Default: qwen3:4b.
+  Ollama language model to look for. Default: qwen3:4b-instruct.
 
 .EXAMPLE
   .\scripts\check-env.ps1
@@ -23,7 +23,7 @@
 param(
     [string]$SqlInstance = "localhost",
     [string]$EmbeddingModel = "bge-m3",
-    [string]$LlmModel = "qwen3:4b",
+    [string]$LlmModel = "qwen3:4b-instruct",
     [string]$OllamaUrl = "http://localhost:11434"
 )
 

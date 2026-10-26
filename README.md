@@ -56,7 +56,7 @@ Escenario de ejemplo: **Estudio Ámbar S.L.**, un estudio de diseño ficticio co
                      ┌──────────────────────────────────┐
                      │ Ollama (local)                   │
                      │  bge-m3   -> embeddings 1024 dim │
-                     │  qwen3:4b -> extracción y RAG    │
+                     │  qwen3:4b-instruct -> extracción, RAG │
                      └──────────────────────────────────┘
 ```
 
@@ -68,7 +68,7 @@ Más detalle (modelo de datos y flujos) en [docs/arquitectura.md](docs/arquitect
 
 ```
 SQL Server 2025 (Enterprise Developer)   T-SQL   SSMS 21/22
-Ollama   bge-m3 (MIT)   qwen3:4b (Apache 2.0)   Caddy (Apache 2.0)
+Ollama   bge-m3 (MIT)   qwen3:4b-instruct (Apache 2.0)   Caddy (Apache 2.0)
 Git   GitHub   PowerShell   Claude (asistente de IA, ver Bloque B)
 ```
 
@@ -156,10 +156,10 @@ cd mnemos-archive
 ```powershell
 winget install Ollama.Ollama
 ollama pull bge-m3
-ollama pull qwen3:4b
+ollama pull qwen3:4b-instruct
 ```
 
-En un equipo con poca memoria se puede usar `qwen3:1.7b`: basta cambiar `modelo_llm` en la tabla `archivo.config_ia`.
+Se usa la variante **instruct** a propósito: `qwen3:4b` a secas es la versión "thinking", que razona en voz alta antes de cada respuesta y es mucho más lenta. El modelo se cambia en la tabla `archivo.config_ia` (`modelo_llm`).
 
 **4. Puente HTTPS con Caddy** (SQL Server solo llama a modelos por HTTPS)
 
@@ -321,6 +321,8 @@ Lo interesante: el primer índice propuesto **no** se usaba, porque Row-Level Se
 | Funciones de ventana anidadas (error 4109) | Calcular los totales en un CTE y ordenar después |
 | Las pruebas dentro de una transacción fallaban al provocar errores (3930) | Pruebas sin transacción global, con limpieza al final |
 | En SQL Server 2025 RTM, `REGEXP_MATCHES` no acepta `nvarchar(max)` (error 19304) | Convertir a `nvarchar(4000)` y, en textos largos, usar `REPLACE`/`CHARINDEX` |
+| `qwen3:4b` es la variante que razona: respuestas de hasta 200 s y timeout (error 31629) | Usar `qwen3:4b-instruct` |
+| Full-Text no instalado: el error 7609 no se puede capturar con TRY/CATCH | Detectar el servicio `fdlauncher` y crear el índice con SQL dinámico |
 
 **Mejoras posibles**
 

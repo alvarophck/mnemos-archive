@@ -1,6 +1,6 @@
 /* =====================================================================
    Mnemos Archive · ai/06_llm_chat.sql
-   Llamada al modelo de lenguaje local (qwen3:4b en Ollama) desde T-SQL
+   Llamada al modelo de lenguaje local (qwen3:4b-instruct en Ollama) desde T-SQL
    con sp_invoke_external_rest_endpoint.
 
    Lo usan la clasificación de documentos (ai/07) y el RAG (ai/08).
@@ -29,7 +29,6 @@ BEGIN
     DECLARE @payload nvarchar(max) = JSON_OBJECT(
         'model'    : @modelo,
         'stream'   : CAST(0 AS bit),
-        'think'    : CAST(0 AS bit),              -- qwen3: sin razonamiento visible, respuesta directa
         'options'  : JSON_OBJECT('temperature' : 0, 'num_ctx' : 8192),
         'messages' : JSON_ARRAY(
                         JSON_OBJECT('role' : 'system', 'content' : @sistema),
@@ -60,12 +59,12 @@ BEGIN
     SELECT @respuesta = content
     FROM OPENJSON(@http, '$.result.message') WITH (content nvarchar(max) '$.content');
 
-    -- Por si el modelo devuelve razonamiento entre etiquetas <think>...</think>
-    -- (sin regex: en la RTM de SQL Server 2025 REGEXP_* no acepta nvarchar(max))
-    DECLARE @fin int = CHARINDEX(N'</think>', @respuesta);
-    IF CHARINDEX(N'<think>', @respuesta) > 0 AND @fin > 0
-        SET @respuesta = STUFF(@respuesta, CHARINDEX(N'<think>', @respuesta),
-                               @fin + LEN(N'</think>') - CHARINDEX(N'<think>', @respuesta), N'');
+    -- Si se configura un modelo que razona (qwen3:4b "thinking"), su razonamiento
+    -- termina en </think>: nos quedamos solo con lo que va detrás.
+    -- (Sin regex: en la RTM de SQL Server 2025 REGEXP_* no acepta nvarchar(max).)
+    DECLARE @fin int = CHARINDEX(N'>kniht/<', REVERSE(@respuesta));
+    IF @fin > 0
+        SET @respuesta = RIGHT(@respuesta, @fin - 1);
     SET @respuesta = TRIM(NCHAR(10) + NCHAR(13) + N' ' FROM @respuesta);
     SET @duracion_ms = DATEDIFF(MILLISECOND, @inicio, sysutcdatetime());
 END;

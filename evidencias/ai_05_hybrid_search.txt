@@ -1,0 +1,43 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+B├║squeda de texto completo no instalada: la b├║squeda h├¡brida usar├í solo vectores.
+Sin texto completo: resultado solo por similitud de vectores.
+posicion puntuacion_rrf posicion_vector posicion_texto nombre_archivo pagina fragmento
+-------- -------------- --------------- -------------- -------------- ------ ---------
+1 0.016393 1 NULL arganzuela-hosting-febrero.pdf 1 Tecnolog├¡as Arganzuela S.L. ┬À NIF B84512367
+ FACTURA TA-26-0219 ┬À Fecha 28/02/2026
+ Cliente: Estudio ├ümbar S.L.
+ Servicio de alojamiento web
+2 0.016129 2 NULL contrato-mantenimiento-web.pdf 1 CONTRATO DE MANTENIMIENTO Y SOPORTE
+ N┬║ TA-SLA-2026 ┬À 10 de enero de 2026
+ Proveedor: Tecnolog├¡as Arganzuela S.L. (NIF B84512367). Cliente: 
+3 0.015873 3 NULL arganzuela-hosting-enero.pdf 1 Tecnolog├¡as Arganzuela S.L. ┬À NIF B84512367
+ FACTURA TA-26-0107 ┬À Fecha 31/01/2026
+ Cliente: Estudio ├ümbar S.L. ┬À NIF B12345674
+ Servicio de
+4 0.015625 4 NULL factura-2026-022.pdf 1 FACTURA N┬║ 2026-022
+ Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+ Cliente: Construcciones Vallecas S.A. ┬À NIF A28765432
+ Fecha de emisi├│n: 30
+5 0.015385 5 NULL gestoria-moncloa-t2.pdf 1 Gestor├¡a Moncloa S.L. ┬À NIF B87123458
+ Factura GM-2026-T2-131 ┬À 05/07/2026
+ Honorarios de asesor├¡a fiscal y contable, segundo trimestre de 2
+
+Sin texto completo: resultado solo por similitud de vectores.
+posicion puntuacion_rrf posicion_vector posicion_texto nombre_archivo pagina fragmento
+-------- -------------- --------------- -------------- -------------- ------ ---------
+1 0.016393 1 NULL contrato-senaletica-vallecas.pdf 1 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+ [p├ígina 2]
+ Cl├íusula 3. Penalizaci├│n: por cada semana de retraso en 
+2 0.016129 2 NULL presupuesto-vallecas-fase2.pdf 1 PRESUPUESTO P-2026-024 ┬À 01/10/2026
+ De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+ Fase 2 de se├▒al├®tica: dise├▒o de la se├▒aliz
+3 0.015625 4 NULL presupuesto-cafe-malasana-web.pdf 1 PRESUPUESTO P-2026-019 ┬À 02/09/2026
+ De: Estudio ├ümbar S.L. ┬À Para: Caf├® Malasa├▒a S.L.
+ Proyecto: tienda online de caf├® en grano con pasarel
+4 0.015385 5 NULL escaneo-0004.pdf 1 Recib├¡ de Caf├® Malasa├▒a S.L. la cantidad de 484,00 euros en concepto de anticipo del 50 % del redise├▒o de la carta de invierno.
+ Madrid, 8 d
+5 0.015152 6 NULL contrato-alquiler-oficina.pdf 1 os los cinco primeros d├¡as de cada mes.
+ [p├ígina 2]
+ Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+ Cl├íusula 4. Preaviso: cualquiera 
+

@@ -1,0 +1,84 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+posicion similitud nombre_archivo tipo tercero pagina fragmento
+-------- --------- -------------- ---- ------- ------ ---------
+1 0.6582 contrato-senaletica-vallecas.pdf contrato Construcciones Vallecas S.A. 1 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+ [p├ígina 2]
+ Cl├íusula 3. Penalizaci├│n: por cada semana de retraso en la entrega se descon
+2 0.5093 contrato-alquiler-oficina.pdf contrato Inmobiliaria Retiro S.L. 1 os los cinco primeros d├¡as de cada mes.
+ [p├ígina 2]
+ Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+ Cl├íusula 4. Preaviso: cualquiera de las partes podr├í 
+3 0.4786 escaneo-0004.pdf sin_clasificar NULL 1 Recib├¡ de Caf├® Malasa├▒a S.L. la cantidad de 484,00 euros en concepto de anticipo del 50 % del redise├▒o de la carta de invierno.
+ Madrid, 8 de octubre de 2026.
+ 
+4 0.4613 factura-2026-037.pdf factura Caf├® Malasa├▒a S.L. 1 FACTURA N┬║ 2026-037
+ Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+ Cliente: Caf├® Malasa├▒a S.L. ┬À NIF B88345671
+ Fecha de emisi├│n: 20/06/2026
+ Concepto: Redise├▒o d
+5 0.4569 presupuesto-cafe-malasana-web.pdf presupuesto Caf├® Malasa├▒a S.L. 1 PRESUPUESTO P-2026-019 ┬À 02/09/2026
+ De: Estudio ├ümbar S.L. ┬À Para: Caf├® Malasa├▒a S.L.
+ Proyecto: tienda online de caf├® en grano con pasarela de pago y 20 ficha
+
+posicion similitud nombre_archivo tipo tercero pagina fragmento
+-------- --------- -------------- ---- ------- ------ ---------
+1 0.5510 contrato-alquiler-oficina.pdf contrato Inmobiliaria Retiro S.L. 1 os los cinco primeros d├¡as de cada mes.
+ [p├ígina 2]
+ Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+ Cl├íusula 4. Preaviso: cualquiera de las partes podr├í 
+2 0.4893 contrato-senaletica-vallecas.pdf contrato Construcciones Vallecas S.A. 1 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+ [p├ígina 2]
+ Cl├íusula 3. Penalizaci├│n: por cada semana de retraso en la entrega se descon
+3 0.4733 presupuesto-vallecas-fase2.pdf presupuesto Construcciones Vallecas S.A. 1 PRESUPUESTO P-2026-024 ┬À 01/10/2026
+ De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+ Fase 2 de se├▒al├®tica: dise├▒o de la se├▒alizaci├│n interior de 3 
+4 0.4731 nda-laura-mendez.pdf contrato Laura M├®ndez Ortega 1 ACUERDO DE CONFIDENCIALIDAD
+ N┬║ NDA-2026-007 ┬À 1 de junio de 2026
+ Partes: Estudio ├ümbar S.L. (NIF B12345674) y Laura M├®ndez Ortega (NIF 50123456K), ilustradora
+5 0.4365 presupuesto-cafe-malasana-web.pdf presupuesto Caf├® Malasa├▒a S.L. 1 PRESUPUESTO P-2026-019 ┬À 02/09/2026
+ De: Estudio ├ümbar S.L. ┬À Para: Caf├® Malasa├▒a S.L.
+ Proyecto: tienda online de caf├® en grano con pasarela de pago y 20 ficha
+
+posicion similitud nombre_archivo tipo tercero pagina fragmento
+-------- --------- -------------- ---- ------- ------ ---------
+1 0.6005 energia-clara-julio.pdf factura Energ├¡a Clara S.A. 1 ENERG├ìA CLARA S.A. ┬À NIF A81234567
+ Factura de electricidad EC-7781203 ┬À Periodo 01/07/2026 - 31/07/2026
+ Titular: Estudio ├ümbar S.L. ┬À Suministro: Calle del Pe
+2 0.5771 escaneo-0003.pdf sin_clasificar NULL 1 Energia Clara SA ┬À A81234567 ┬À Factura EC-7790415
+ Periodo de facturaci├│n: 01/08/2026 a 31/08/2026
+ Titular: Estudio Ambar SL
+ Consumo 388 kWh
+ Total factura 91
+3 0.5604 factura-2026-048.pdf factura Pedro Garc├¡a Ruiz 1 FACTURA N┬║ 2026-048
+ Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+ Cliente: Pedro Garc├¡a Ruiz ┬À NIF 12345678Z
+ Fecha de emisi├│n: 15/09/2026
+ Concepto: Campa├▒a de 
+
+posicion similitud nombre_archivo tipo tercero pagina fragmento
+-------- --------- -------------- ---- ------- ------ ---------
+1 0.5750 imprenta-lavapies-0458.pdf factura Imprenta Lavapi├®s S.L. 1 IMPRENTA LAVAPI├ëS S.L. ┬À NIF B86234519
+ Factura IL-0458 ┬À 10/09/2026
+ Cliente: Estudio ├ümbar S.L.
+ Impresi├│n de 500 folletos d├¡ptico en papel estucado de 170 g 
+2 0.5469 factura-2026-022.pdf factura Construcciones Vallecas S.A. 1 FACTURA N┬║ 2026-022
+ Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+ Cliente: Construcciones Vallecas S.A. ┬À NIF A28765432
+ Fecha de emisi├│n: 30/03/2026
+ Concepto: 
+3 0.5416 factura-2026-048.pdf factura Pedro Garc├¡a Ruiz 1 FACTURA N┬║ 2026-048
+ Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+ Cliente: Pedro Garc├¡a Ruiz ┬À NIF 12345678Z
+ Fecha de emisi├│n: 15/09/2026
+ Concepto: Campa├▒a de 
+4 0.4982 factura-2026-041.pdf factura Laura M├®ndez Ortega 1 FACTURA N┬║ 2026-041
+ Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+ Cliente: Laura M├®ndez Ortega ┬À NIF 50123456K
+ Fecha de emisi├│n: 14/07/2026
+ Concepto: Ilustraci
+5 0.4867 factura-2026-037.pdf factura Caf├® Malasa├▒a S.L. 1 FACTURA N┬║ 2026-037
+ Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+ Cliente: Caf├® Malasa├▒a S.L. ┬À NIF B88345671
+ Fecha de emisi├│n: 20/06/2026
+ Concepto: Redise├▒o d
+

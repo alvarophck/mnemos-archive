@@ -1,0 +1,77 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+documento_id nombre_archivo tipo estado
+------------ -------------- ---- ------
+19 escaneo-0001.pdf sin_clasificar pendiente
+20 escaneo-0002.pdf sin_clasificar pendiente
+21 escaneo-0003.pdf sin_clasificar pendiente
+22 escaneo-0004.pdf sin_clasificar pendiente
+
+(4 rows affected)
+documento_id nombre_archivo tipo direccion departamento tercero_enlazado similitud_tercero numero fecha_documento importe_total confianza aviso milisegundos_modelo respuesta_modelo
+------------ -------------- ---- --------- ------------ ---------------- ----------------- ------ --------------- ------------- --------- ----- ------------------- ----------------
+19 escaneo-0001.pdf factura recibido contabilidad Transportes Henares S.L. 100 TH/2026/0912 2026-09-12 102.85 0.950 NULL 20645 {
+  "base_imponible": "85.00",
+  "confianza": 0.95,
+  "contraparte": "TRANSPORTES HENARES S.L.",
+  "direccion": "recibido",
+  "fecha": "2026-09-12",
+  "iva": "17.85",
+  "nif_contraparte": "B19876543",
+  "numero": "TH/2026/0912",
+  "tipo": "factura",
+  "tot
+
+documento_id nombre_archivo tipo direccion departamento tercero_enlazado similitud_tercero numero fecha_documento importe_total confianza aviso milisegundos_modelo respuesta_modelo
+------------ -------------- ---- --------- ------------ ---------------- ----------------- ------ --------------- ------------- --------- ----- ------------------- ----------------
+20 escaneo-0002.pdf presupuesto recibido contabilidad Papeler├¡a Chamber├¡ S.L. 100 PCH-311 2026-10-03 387.20 0.950 NULL 14668 {
+  "base_imponible": "",
+  "confianza": 0.95,
+  "contraparte": "Papeler├¡a Chamber├¡ S.L.",
+  "direccion": "recibido",
+  "fecha": "2026-10-03",
+  "iva": "",
+  "nif_contraparte": "B83456781",
+  "numero": "PCH-311",
+  "tipo": "presupuesto",
+  "total": "387.20
+
+documento_id nombre_archivo tipo direccion departamento tercero_enlazado similitud_tercero numero fecha_documento importe_total confianza aviso milisegundos_modelo respuesta_modelo
+------------ -------------- ---- --------- ------------ ---------------- ----------------- ------ --------------- ------------- --------- ----- ------------------- ----------------
+21 escaneo-0003.pdf factura recibido contabilidad Energ├¡a Clara S.A. 100 EC-7790415 2026-08-31 91.07 0.950 NULL 14621 {
+  "base_imponible": "",
+  "confianza": 0.95,
+  "contraparte": "Energia Clara SA",
+  "direccion": "recibido",
+  "fecha": "2026-08-31",
+  "iva": "",
+  "nif_contraparte": "A81234567",
+  "numero": "EC-7790415",
+  "tipo": "factura",
+  "total": "91.07"
+}
+
+documento_id nombre_archivo tipo direccion departamento tercero_enlazado similitud_tercero numero fecha_documento importe_total confianza aviso milisegundos_modelo respuesta_modelo
+------------ -------------- ---- --------- ------------ ---------------- ----------------- ------ --------------- ------------- --------- ----- ------------------- ----------------
+22 escaneo-0004.pdf recibo recibido contabilidad Caf├® Malasa├▒a S.L. 100 NULL 2026-10-08 484.00 0.950 NULL 12522 {
+  "base_imponible": "",
+  "confianza": 0.95,
+  "contraparte": "Caf├® Malasa├▒a S.L.",
+  "direccion": "recibido",
+  "fecha": "2026-10-08",
+  "iva": "",
+  "nif_contraparte": "",
+  "numero": "",
+  "tipo": "recibo",
+  "total": "484.00"
+}
+
+Fragmentos nuevos: 4
+Documentos vectorizados: 4 ┬À con error: 0
+documento_id nombre_archivo tipo direccion departamento numero fecha_documento importe_total moneda tercero nif_tercero estado campos fragmentos_con_vector
+------------ -------------- ---- --------- ------------ ------ --------------- ------------- ------ ------- ----------- ------ ------ ---------------------
+19 escaneo-0001.pdf factura recibido contabilidad TH/2026/0912 2026-09-12 102.85 EUR Transportes Henares S.L. B19876543 procesado 7 1
+20 escaneo-0002.pdf presupuesto recibido contabilidad PCH-311 2026-10-03 387.20 EUR Papeler├¡a Chamber├¡ S.L. B83456781 procesado 5 1
+21 escaneo-0003.pdf factura recibido contabilidad EC-7790415 2026-08-31 91.07 EUR Energ├¡a Clara S.A. A81234567 procesado 5 1
+22 escaneo-0004.pdf recibo recibido contabilidad NULL 2026-10-08 484.00 EUR Caf├® Malasa├▒a S.L. B88345671 procesado 3 1
+
+(4 rows affected)

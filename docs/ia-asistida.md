@@ -104,6 +104,20 @@ Los casos de abajo son reales: en cuatro de ellos el código generado por la IA 
 
 ---
 
+## Caso 8. Elección del modelo de lenguaje
+
+**Prompt (resumen):** "Elige un modelo local con licencia permisiva para extraer campos y responder preguntas en español."
+
+**Respuesta de la IA:** `qwen3:4b` (Apache 2.0), con `"think": false` en la petición a Ollama para que respondiera directamente.
+
+**Qué se aceptó:** la familia de modelos (Qwen3, Apache 2.0, 4B parámetros: cabe en un portátil).
+
+**Qué se corrigió:** al ejecutar el RAG, cada respuesta empezaba con "Okay, let's see..." y tardaba entre 40 y 200 segundos; la de más de 230 segundos superó el límite de `sp_invoke_external_rest_endpoint` (**error 31629**). Añadir `/no_think` tampoco sirvió. Consultando el registro de Ollama se vio por qué: la etiqueta `qwen3:4b` apunta hoy a **`qwen3:4b-thinking-2507`**, una variante que razona siempre. Se cambió a **`qwen3:4b-instruct`** (sin razonamiento) en `archivo.config_ia`, y la limpieza de la respuesta se quedó solo con lo que va después de `</think>` por si alguien configura un modelo que razona.
+
+**Cómo se verificó:** volviendo a ejecutar `ai/08_rag.sql` y comprobando en `evidencias/ai_08_rag.txt` que las respuestas son directas, en español y con su cita.
+
+---
+
 ## Lo que la IA no hizo sola
 
 - Las decisiones de producto (local, sin nube, cifras calculadas y no estimadas, borrado en cascada por el RGPD) se fijaron antes de pedir código.
