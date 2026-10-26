@@ -1,0 +1,14 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+OK  1 datos de prueba
+OK  2 total facturado calculado por la base de datos
+OK  3 deduplicaci├│n por hash SHA-256
+OK  4 documento vac├¡o rechazado
+OK  5 CHECK de tipo de documento
+OK  6 correcci├│n de campo + auditor├¡a por trigger
+OK  7 borrado en cascada y auditado
+OK  8 funciones (regex, importes, fuzzy, p├íginas)
+OK  9 vistas
+OK 10 seguridad (RLS, enmascaramiento, DENY DELETE)
+ 
+Todas las pruebas pasaron (10/10).
+Datos de prueba restaurados.

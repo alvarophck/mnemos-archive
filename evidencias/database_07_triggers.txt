@@ -1,0 +1,2 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+Triggers creados: trg_campos_auditoria, trg_documentos_borrado, trg_documentos_texto.

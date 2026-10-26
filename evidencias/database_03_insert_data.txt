@@ -1,0 +1,7 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+tabla filas
+----- -----
+terceros 11
+documentos 22
+campos_extraidos 122
+

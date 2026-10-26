@@ -1,0 +1,4 @@
+﻿Se cambi├│ el contexto de la base de datos a 'master'.
+La base de datos MnemosArchive ya existe.
+Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+Base de datos lista (compatibilidad 170, preview activado, esquema archivo).

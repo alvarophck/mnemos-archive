@@ -88,12 +88,14 @@ WITH (tipo varchar(20), emisor nvarchar(200), nif varchar(12), fecha date, total
 GO
 
 /* 5. Expresiones regulares (SQL Server 2025)
+   Nota: en la versión RTM (17.0.1000) las funciones REGEXP_* no aceptan
+   nvarchar(max); por eso el texto se convierte a nvarchar(4000).
    5a. Leer del texto todos los importes con formato español y su etiqueta */
 SELECT d.nombre_archivo,
        m.match_value                                         AS coincidencia,
        archivo.fn_importe_es(REGEXP_SUBSTR(m.match_value, '[0-9]{1,3}(\.[0-9]{3})*,[0-9]{2}')) AS importe
 FROM archivo.documentos AS d
-CROSS APPLY REGEXP_MATCHES(d.texto, '(?i)(base imponible|iva 21 %|total)[^0-9]*[0-9]{1,3}(\.[0-9]{3})*,[0-9]{2}') AS m
+CROSS APPLY REGEXP_MATCHES(CAST(d.texto AS nvarchar(4000)), '(?i)(base imponible|iva 21 %|total)[^0-9]*[0-9]{1,3}(\.[0-9]{3})*,[0-9]{2}') AS m
 WHERE d.numero = N'2026-048';
 GO
 
@@ -101,8 +103,8 @@ GO
 WITH importes AS
 (
     SELECT d.documento_id, d.numero, d.importe_total,
-           archivo.fn_importe_es(REGEXP_SUBSTR(d.texto, '(?i)base imponible: ([0-9.,]+)', 1, 1, '', 1)) AS base,
-           archivo.fn_importe_es(REGEXP_SUBSTR(d.texto, '(?i)iva 21 %: ([0-9.,]+)', 1, 1, '', 1))         AS iva
+           archivo.fn_importe_es(REGEXP_SUBSTR(CAST(d.texto AS nvarchar(4000)), '(?i)base imponible: ([0-9.,]+)', 1, 1, '', 1)) AS base,
+           archivo.fn_importe_es(REGEXP_SUBSTR(CAST(d.texto AS nvarchar(4000)), '(?i)iva 21 %: ([0-9.,]+)', 1, 1, '', 1))         AS iva
     FROM archivo.documentos AS d
     WHERE d.tipo = 'factura' AND d.direccion = 'emitido'
 )

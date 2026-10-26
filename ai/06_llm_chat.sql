@@ -60,8 +60,13 @@ BEGIN
     SELECT @respuesta = content
     FROM OPENJSON(@http, '$.result.message') WITH (content nvarchar(max) '$.content');
 
-    -- Por si el modelo devuelve razonamiento entre etiquetas <think>
-    SET @respuesta = TRIM(NCHAR(10) + NCHAR(13) + N' ' FROM REGEXP_REPLACE(@respuesta, '(?s)<think>.*?</think>', ''));
+    -- Por si el modelo devuelve razonamiento entre etiquetas <think>...</think>
+    -- (sin regex: en la RTM de SQL Server 2025 REGEXP_* no acepta nvarchar(max))
+    DECLARE @fin int = CHARINDEX(N'</think>', @respuesta);
+    IF CHARINDEX(N'<think>', @respuesta) > 0 AND @fin > 0
+        SET @respuesta = STUFF(@respuesta, CHARINDEX(N'<think>', @respuesta),
+                               @fin + LEN(N'</think>') - CHARINDEX(N'<think>', @respuesta), N'');
+    SET @respuesta = TRIM(NCHAR(10) + NCHAR(13) + N' ' FROM @respuesta);
     SET @duracion_ms = DATEDIFF(MILLISECOND, @inicio, sysutcdatetime());
 END;
 GO

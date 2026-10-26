@@ -1,0 +1,2 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+Vistas creadas: v_documentos, v_facturacion_mensual, v_pendientes_ia, v_contratos.

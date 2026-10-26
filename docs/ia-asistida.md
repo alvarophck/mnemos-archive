@@ -90,6 +90,20 @@ Los casos de abajo son reales: en cuatro de ellos el código generado por la IA 
 
 ---
 
+## Caso 7. Expresiones regulares en la versión RTM de SQL Server 2025
+
+**Prompt (resumen):** "Escribe consultas que usen las funciones REGEXP_* de SQL Server 2025 para leer los importes del texto de las facturas."
+
+**Respuesta de la IA:** `REGEXP_MATCHES(d.texto, ...)` y `REGEXP_SUBSTR(d.texto, ...)` directamente sobre la columna `texto` (`nvarchar(max)`). La documentación dice que admiten `nvarchar(max)` hasta 2 MB.
+
+**Qué se aceptó:** los patrones y la comprobación base + IVA = total.
+
+**Qué se corrigió:** en el equipo de entrega, con SQL Server 2025 **RTM (17.0.1000.7)**, falló con el **error 19304**: *la función "REGEXP_MATCHES" no admite entradas NVARCHAR(max)*. El código se había probado en una versión con actualizaciones acumulativas, donde sí funciona. Se convirtió el texto a `nvarchar(4000)` antes de aplicar la expresión regular, y en las funciones que reciben textos largos (contar marcas de página, limpiar la respuesta del modelo) se sustituyó la regex por `REPLACE` y `CHARINDEX`.
+
+**Cómo se verificó:** volviendo a ejecutar `instalar.ps1` en el equipo RTM y las pruebas en el equipo actualizado.
+
+---
+
 ## Lo que la IA no hizo sola
 
 - Las decisiones de producto (local, sin nube, cifras calculadas y no estimadas, borrado en cascada por el RGPD) se fijaron antes de pedir código.

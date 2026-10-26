@@ -1,0 +1,2 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+Procedimientos creados: usp_archivar_documento, usp_corregir_campo, usp_borrar_documento, usp_resumen_tercero.

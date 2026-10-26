@@ -60,13 +60,16 @@ RETURN
     WHERE d.tercero_id = @tercero_id;
 GO
 
-/* Página en la que empieza un fragmento: cuenta las marcas "[página N]"
-   que hay en el texto antes de su posición. */
+/* Página en la que empieza un fragmento: cuenta las marcas "[página "
+   que hay en el texto antes de su posición. (Sin regex: en la RTM de
+   SQL Server 2025 las funciones REGEXP_* no aceptan nvarchar(max).) */
 CREATE OR ALTER FUNCTION archivo.fn_pagina_en (@texto nvarchar(max), @posicion int)
 RETURNS smallint
 AS
 BEGIN
-    RETURN 1 + REGEXP_COUNT(LEFT(@texto, @posicion), N'\[página [0-9]+\]');
+    DECLARE @antes nvarchar(max) = LEFT(@texto, @posicion);
+    DECLARE @marca nvarchar(10) = N'[página';
+    RETURN 1 + (DATALENGTH(@antes) - DATALENGTH(REPLACE(@antes, @marca, N''))) / DATALENGTH(@marca);
 END;
 GO
 

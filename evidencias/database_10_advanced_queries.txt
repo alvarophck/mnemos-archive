@@ -1,0 +1,93 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+cliente fecha_documento importe_total acumulado_cliente total_cliente pct_del_anio ranking_cliente
+------- --------------- ------------- ----------------- ------------- ------------ ---------------
+Construcciones Vallecas S.A. 2026-03-30 6050.00 6050.00 6050.00 48.15 1
+Pedro Garc├¡a Ruiz 2026-02-10 1210.00 1210.00 4820.00 38.36 2
+Pedro Garc├¡a Ruiz 2026-05-06 2100.00 3310.00 4820.00 38.36 2
+Pedro Garc├¡a Ruiz 2026-09-15 1510.00 4820.00 4820.00 38.36 2
+Caf├® Malasa├▒a S.L. 2026-06-20 968.00 968.00 968.00 7.70 3
+Laura M├®ndez Ortega 2026-07-14 726.00 726.00 726.00 5.78 4
+
+(6 rows affected)
+proveedor fecha_documento importe_total anterior variacion
+--------- --------------- ------------- -------- ---------
+Energ├¡a Clara S.A. 2026-07-31 96.32 NULL NULL
+Gestor├¡a Moncloa S.L. 2026-04-05 217.80 NULL NULL
+Gestor├¡a Moncloa S.L. 2026-07-05 217.80 217.80 0.00
+Imprenta Lavapi├®s S.L. 2026-09-10 423.50 NULL NULL
+Tecnolog├¡as Arganzuela S.L. 2026-01-31 72.60 NULL NULL
+Tecnolog├¡as Arganzuela S.L. 2026-02-28 72.60 72.60 0.00
+
+(6 rows affected)
+numero nombre importe_total media_tercero
+------ ------ ------------- -------------
+2026-031 Pedro Garc├¡a Ruiz 2100.00 1606.666666
+
+(1 row affected)
+JSON_F52E2B61-18A1-11d1-B105-00805F49916B
+-----------------------------------------
+{"documento_id":1,"nombre_archivo":"factura-2026-014.pdf","tipo":"factura","numero":"2026-014","tercero":{"nombre":"Pedro Garc├¡a Ruiz","ciudad":"Madrid"},"campos":[{"campo":"numero","valor":"2026-014","confianza":1.000,"extraido_por":"manual"},{"campo":"fe
+
+(1 row affected)
+tipo emisor nif fecha total confianza
+---- ------ --- ----- ----- ---------
+factura Transportes Henares S.L. B19876543 2026-09-12 102.85 0.920
+
+(1 row affected)
+nombre_archivo coincidencia importe
+-------------- ------------ -------
+factura-2026-048.pdf Base imponible: 1.247,93 1247.93
+factura-2026-048.pdf IVA 21 %: 262,07 262.07
+factura-2026-048.pdf TOTAL: 1.510,00 1510.00
+
+(3 rows affected)
+numero base iva suma importe_total comprobacion
+------ ---- --- ---- ------------- ------------
+2026-014 1000.00 210.00 1210.00 1210.00 cuadra
+2026-031 1735.54 364.46 2100.00 2100.00 cuadra
+2026-048 1247.93 262.07 1510.00 1510.00 cuadra
+2026-022 5000.00 1050.00 6050.00 6050.00 cuadra
+2026-037 800.00 168.00 968.00 968.00 cuadra
+2026-041 600.00 126.00 726.00 726.00 cuadra
+
+(6 rows affected)
+nombre nif formato_valido
+------ --- --------------
+Caf├® Malasa├▒a S.L. B88345671 1
+Construcciones Vallecas S.A. A28765432 1
+Energ├¡a Clara S.A. A81234567 1
+Gestor├¡a Moncloa S.L. B87123458 1
+Imprenta Lavapi├®s S.L. B86234519 1
+Inmobiliaria Retiro S.L. B85678912 1
+Laura M├®ndez Ortega 50123456K 1
+Papeler├¡a Chamber├¡ S.L. B83456781 1
+Pedro Garc├¡a Ruiz 12345678Z 1
+Tecnolog├¡as Arganzuela S.L. B84512367 1
+Transportes Henares S.L. B19876543 1
+
+(11 rows affected)
+nombre similitud_jaro_winkler distancia_edicion
+------ ---------------------- -----------------
+Energ├¡a Clara S.A. 95 3
+Gestor├¡a Moncloa S.L. 67 14
+Papeler├¡a Chamber├¡ S.L. 65 14
+Tecnolog├¡as Arganzuela S.L. 64 18
+Imprenta Lavapi├®s S.L. 64 15
+Construcciones Vallecas S.A. 59 19
+Pedro Garc├¡a Ruiz 59 13
+Inmobiliaria Retiro S.L. 58 17
+Caf├® Malasa├▒a S.L. 54 13
+Laura M├®ndez Ortega 53 16
+Transportes Henares S.L. 51 17
+
+(11 rows affected)
+tercero_id nombre nif similitud
+---------- ------ --- ---------
+5 Construcciones Vallecas S.A. A28765432 96
+
+(1 row affected)
+numero tercero fecha_entrega preaviso dias_hasta_entrega
+------ ------- ------------- -------- ------------------
+CS-2026-003 Construcciones Vallecas S.A. 2026-06-30 NULL -118
+
+(1 row affected)

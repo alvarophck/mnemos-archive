@@ -320,6 +320,7 @@ Lo interesante: el primer índice propuesto **no** se usaba, porque Row-Level Se
 | El índice de la optimización no se usaba | Añadir `departamento` (columna del predicado RLS) al `INCLUDE` |
 | Funciones de ventana anidadas (error 4109) | Calcular los totales en un CTE y ordenar después |
 | Las pruebas dentro de una transacción fallaban al provocar errores (3930) | Pruebas sin transacción global, con limpieza al final |
+| En SQL Server 2025 RTM, `REGEXP_MATCHES` no acepta `nvarchar(max)` (error 19304) | Convertir a `nvarchar(4000)` y, en textos largos, usar `REPLACE`/`CHARINDEX` |
 
 **Mejoras posibles**
 

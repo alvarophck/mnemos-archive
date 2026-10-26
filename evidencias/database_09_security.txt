@@ -1,0 +1,54 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+--- usr_admin: ve todos los documentos y los datos sin m├íscara
+usuario tipo documentos
+------- ---- ----------
+usr_admin contrato 4
+usr_admin factura 12
+usr_admin presupuesto 2
+usr_admin sin_clasificar 4
+
+(4 rows affected)
+nombre nif email telefono
+------ --- ----- --------
+Pedro Garc├¡a Ruiz 12345678Z pedro.garcia@correo-ejemplo.es 600111222
+Tecnolog├¡as Arganzuela S.L. B84512367 facturas@arganzuela-tec.example 910000101
+Imprenta Lavapi├®s S.L. B86234519 pedidos@imprenta-lavapies.example 910000102
+
+(3 rows affected)
+--- usr_contable: no ve los contratos; NIF, email y tel├®fono enmascarados
+usuario tipo documentos
+------- ---- ----------
+usr_contable factura 12
+usr_contable presupuesto 2
+usr_contable sin_clasificar 4
+
+(3 rows affected)
+nombre nif email telefono
+------ --- ----- --------
+Pedro Garc├¡a Ruiz *****678Z pXXX@XXXX.com XXXXXX222
+Tecnolog├¡as Arganzuela S.L. *****2367 fXXX@XXXX.com XXXXXX101
+Imprenta Lavapi├®s S.L. *****4519 pXXX@XXXX.com XXXXXX102
+
+(3 rows affected)
+--- usr_legal: solo ve contratos y no puede leer NIF ni email
+usuario tipo documentos
+------- ---- ----------
+usr_legal contrato 4
+
+(1 row affected)
+usuario fragmentos_visibles
+------- -------------------
+usr_legal 0
+
+(1 row affected)
+usuario denegado
+------- --------
+usr_legal Se deneg├│ el permiso SELECT en la columna 'nif' del objeto 'terceros', base de datos 'MnemosArchive', esquema 'archivo'.
+
+(1 row affected)
+(0 rows affected)
+usuario denegado
+------- --------
+usr_legal Se deneg├│ el permiso DELETE en el objeto 'documentos', base de datos 'MnemosArchive', esquema 'archivo'.
+
+(1 row affected)

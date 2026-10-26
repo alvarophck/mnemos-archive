@@ -1,0 +1,2 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+Tablas creadas: terceros, documentos, campos_extraidos, fragmentos, auditoria, consultas_rag.

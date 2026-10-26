@@ -1,0 +1,2 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+Funciones creadas: fn_nif_valido, fn_importe_es, fn_buscar_tercero, fn_documentos_de_tercero, fn_pagina_en.
