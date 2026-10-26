@@ -1,0 +1,16 @@
+# Secretos y configuración local (no debe haber, pero por si acaso)
+.env
+*.local.*
+*.pfx
+*.key
+
+# Copias de seguridad y ficheros de datos de SQL Server
+*.bak
+*.mdf
+*.ldf
+
+# Editores y sistema
+.vscode/
+.vs/
+Thumbs.db
+.DS_Store
