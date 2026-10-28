@@ -1,0 +1,245 @@
+@page "/documentos/{Id:int}"
+@using System.Text.RegularExpressions
+@inject ArchivoDb Db
+@inject Archivador Archivador
+@inject AlmacenArchivos Almacen
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<PageTitle>@(detalle?.Documento.NombreArchivo ?? L["NavDocumentos"]) · Mnemos Archive</PageTitle>
+
+<p class="pequeno" style="margin-bottom: var(--space-4)"><a href="/documentos">← @L["VolverADocumentos"]</a></p>
+
+@if (error is not null)
+{
+    <div class="error" role="alert"><Icono Nombre="alerta" /> <span>@error</span></div>
+}
+else if (cargando)
+{
+    <p class="muted">@L["Cargando"]</p>
+}
+else if (detalle is null)
+{
+    <div class="encabezado">
+        <h1 tabindex="-1">@L["DocumentoNoDisponible"]</h1>
+        <p>@L["DocumentoNoDisponibleTexto"]</p>
+    </div>
+}
+else
+{
+    var d = detalle.Documento;
+    <div class="pila-grande">
+        <section class="ficha-cabecera">
+            <p class="mono muted">@d.NombreArchivo</p>
+            <h1 tabindex="-1">@Titulo(d)</h1>
+            <div class="metadatos">
+                <span class="insignia">@L[$"Estado_{d.Estado}"]</span>
+                <span class="insignia">@L[$"Departamento_{detalle.Departamento}"]</span>
+                <span class="mono muted pequeno">@string.Format(L["Paginas"], detalle.Paginas) · @string.Format(L["FragmentosBuscables"], detalle.FragmentosConVector, detalle.Fragmentos)</span>
+            </div>
+            <div class="ficha-acciones">
+                @if (d.TienePdf && Almacen.Ruta(detalle.ArchivoLocal) is not null)
+                {
+                    <a class="boton" href="@($"/archivo/{d.DocumentoId}/pdf{(Pagina is { } p ? $"#page={p}" : "")}")" target="_blank" rel="noopener">@L["AbrirPdf"]</a>
+                }
+                else if (d.TienePdf)
+                {
+                    <span class="aviso pequeno"><Icono Nombre="alerta" /> <span>@L["PdfNoEncontrado"]</span></span>
+                }
+                @if (Perfil.PuedeModificar())
+                {
+                    <button type="button" class="boton" @onclick="LeerConIa" disabled="@trabajando">
+                        @(d.Estado == "procesado" ? L["VolverALeer"] : L["LeerConIa"])
+                    </button>
+                    @if (!confirmarBorrado)
+                    {
+                        <button type="button" class="boton-peligro" @onclick="() => confirmarBorrado = true" disabled="@trabajando">@L["BorrarDocumento"]</button>
+                    }
+                }
+            </div>
+
+            @if (confirmarBorrado)
+            {
+                <div class="error aparece" role="alertdialog" aria-labelledby="borrar-titulo">
+                    <Icono Nombre="alerta" />
+                    <div class="pila">
+                        <p id="borrar-titulo"><strong>@L["BorrarPregunta"]</strong> @L["BorrarExplicacion"]</p>
+                        <div class="ficha-acciones">
+                            <button type="button" class="boton-peligro" @onclick="Borrar" disabled="@trabajando">@L["BorrarDefinitivamente"]</button>
+                            <button type="button" class="boton" @onclick="() => confirmarBorrado = false">@L["Cancelar"]</button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div aria-live="polite">
+                @if (trabajando)
+                {
+                    <p class="muted">@L[$"Paso_{progreso.Paso}"]</p>
+                }
+                else if (mensaje is not null)
+                {
+                    <p class="aviso pequeno"><Icono Nombre="info" /> <span>@mensaje</span></p>
+                }
+            </div>
+        </section>
+
+        <section class="tarjeta pila" aria-labelledby="t-datos">
+            <h2 id="t-datos">@L["DatosDelDocumento"]</h2>
+            <dl class="datos-leidos">
+                <div><dt>@L["ColTipo"]</dt><dd>@L[$"Tipo_{d.Tipo}"]@(d.Direccion is null ? "" : $" · {L[$"Direccion_{d.Direccion}"]}")</dd></div>
+                <div><dt>@L["ColTercero"]</dt><dd>@(d.Tercero ?? L["SinEnlazar"])</dd></div>
+                <div><dt>@L["ColNumero"]</dt><dd class="mono">@(d.Numero ?? "—")</dd></div>
+                <div><dt>@L["ColFecha"]</dt><dd class="mono">@Preferencias.Fecha(d.Fecha)</dd></div>
+                <div><dt>@L["ColImporte"]</dt><dd class="mono">@Preferencias.Importe(d.Importe, d.Moneda)</dd></div>
+                <div><dt>@L["ConservarHasta"]</dt><dd class="mono">@Preferencias.Fecha(detalle.ConservarHasta)</dd></div>
+            </dl>
+
+            @if (detalle.Campos.Count > 0)
+            {
+                <h3>@L["CamposExtraidos"]</h3>
+                <div class="tabla-contenedor">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">@L["ColCampo"]</th>
+                                <th scope="col">@L["ColValor"]</th>
+                                <th scope="col" class="numero">@L["Confianza"]</th>
+                                <th scope="col">@L["ColOrigen"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in detalle.Campos)
+                            {
+                                <tr>
+                                    <td>@NombreCampo(c.Nombre)</td>
+                                    <td class="@(EsCifra(c) ? "mono" : "")">@(c.Valor ?? "—")</td>
+                                    <td class="numero">@(c.Confianza?.ToString("P0", CultureInfo.CurrentCulture) ?? "—")</td>
+                                    <td class="pequeno">@(c.Corregido ? L["CorregidoAMano"] : c.ExtraidoPor == "manual" ? L["Manual"] : c.ExtraidoPor)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </section>
+
+        <section class="pila" aria-labelledby="t-texto">
+            <h2 id="t-texto">@L["TextoDelDocumento"]</h2>
+            @if (string.IsNullOrWhiteSpace(detalle.Texto))
+            {
+                <p class="muted">@L["SinTexto"]</p>
+            }
+            else
+            {
+                <div class="paginas">
+                    @foreach (var (numero, texto) in Paginas(detalle.Texto))
+                    {
+                        <article id="@($"p-{numero}")" class="tarjeta pagina @(Pagina == numero ? "destacada" : "")" tabindex="-1">
+                            <h3 class="etiqueta">@string.Format(L["PaginaN"], numero)</h3>
+                            <pre>@texto</pre>
+                        </article>
+                    }
+                </div>
+            }
+        </section>
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    [SupplyParameterFromQuery(Name = "pagina")] public int? Pagina { get; set; }
+    [CascadingParameter] private Perfil Perfil { get; set; }
+
+    private DetalleDocumento? detalle;
+    private bool cargando = true;
+    private bool trabajando;
+    private bool confirmarBorrado;
+    private bool desplazado;
+    private string? error;
+    private string? mensaje;
+    private ElementoArchivado progreso = new("", 0);
+
+    protected override async Task OnParametersSetAsync()
+    {
+        desplazado = false;
+        await Cargar();
+    }
+
+    private async Task Cargar()
+    {
+        cargando = true;
+        try
+        {
+            detalle = await Db.ObtenerAsync(Id, Perfil);
+            error = null;
+        }
+        catch (ArchivoException ex)
+        {
+            error = ex.Clave is not null ? L[ex.Clave] : ex.MensajeSql;
+        }
+        cargando = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Al llegar desde una cita, se lleva la vista a la página citada
+        if (!desplazado && detalle is not null && Pagina is { } p)
+        {
+            desplazado = true;
+            await JS.InvokeVoidAsync("mnemos.irA", $"p-{p}");
+        }
+    }
+
+    private async Task LeerConIa()
+    {
+        trabajando = true;
+        mensaje = null;
+        progreso = new ElementoArchivado(detalle!.Documento.NombreArchivo, 0) { DocumentoId = Id };
+        try
+        {
+            await Archivador.LeerConIaAsync(progreso, () => InvokeAsync(StateHasChanged));
+            mensaje = progreso.SinVector > 0 ? string.Format(L["SinVector"], progreso.SinVector) : L["LeidoDeNuevo"];
+        }
+        catch (ArchivoException ex)
+        {
+            mensaje = ex.Clave is not null ? L[ex.Clave] : ex.MensajeSql;
+        }
+        trabajando = false;
+        await Cargar();
+    }
+
+    private async Task Borrar()
+    {
+        trabajando = true;
+        try
+        {
+            var archivoLocal = detalle?.ArchivoLocal;
+            await Db.BorrarAsync(Id);
+            Almacen.Borrar(archivoLocal);   // el PDF original también: el borrado RGPD es completo
+            Nav.NavigateTo("/documentos");
+        }
+        catch (ArchivoException ex)
+        {
+            mensaje = ex.Clave is not null ? L[ex.Clave] : ex.MensajeSql;
+            trabajando = false;
+            confirmarBorrado = false;
+        }
+    }
+
+    private string Titulo(FilaDocumento d) =>
+        d.Tercero is { } t ? $"{L[$"Tipo_{d.Tipo}"]} · {t}" : L[$"Tipo_{d.Tipo}"];
+
+    private string NombreCampo(string nombre) => L[$"Campo_{nombre}"] is { ResourceNotFound: false } t ? t.Value : nombre;
+
+    private static bool EsCifra(CampoExtraido c) => c.Nombre is "fecha" or "base_imponible" or "iva" or "total" or "numero" or "nif_contraparte" or "renta_mensual";
+
+    /// <summary>Separa el texto por las marcas "[página N]" que pone la ingesta.</summary>
+    private static IEnumerable<(int Numero, string Texto)> Paginas(string texto)
+    {
+        var partes = Regex.Split(texto, @"\[página (\d+)\]");
+        yield return (1, partes[0].Trim());
+        for (var i = 1; i + 1 < partes.Length; i += 2)
+            yield return (int.Parse(partes[i]), partes[i + 1].Trim());
+    }
+}

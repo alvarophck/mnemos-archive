@@ -73,6 +73,7 @@ CREATE TABLE archivo.documentos
     estado           varchar(12)       NOT NULL CONSTRAINT DF_documentos_estado DEFAULT ('pendiente'),
     fecha_alta       datetime2(0)      NOT NULL CONSTRAINT DF_documentos_fecha_alta DEFAULT (sysutcdatetime()),
     conservar_hasta  date              NULL,       -- plazo de conservación (RGPD)
+    archivo_local    nvarchar(260)     NULL,       -- PDF original en la carpeta de la app (NULL: solo hay texto)
 
     CONSTRAINT PK_documentos PRIMARY KEY (documento_id),
     CONSTRAINT UQ_documentos_hash UNIQUE (hash_sha256),

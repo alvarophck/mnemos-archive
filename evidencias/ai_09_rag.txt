@@ -1,0 +1,191 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+1_pregunta
+----------
+┬┐Con cu├ínto tiempo de antelaci├│n tengo que avisar si quiero dejar la oficina?
+
+2_fuente archivo pagina similitud fragmento documento_id fragmento_completo
+-------- ------- ------ --------- --------- ------------ ------------------
+1 contrato-alquiler-oficina.pdf 1 0.5664 os los cinco primeros d├¡as de cada mes.
+ [p├ígina 2]
+ Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+ Cl├íusula 4. P 15 os los cinco primeros d├¡as de cada mes.
+[p├ígina 2]
+Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+Cl├íusula 4. Preaviso: cualquiera de las partes podr├í resolver el contrato avisando con dos meses de antelaci├│n por escrito.
+Cl├íusula 5. Actualizaci├│
+2 contrato-alquiler-oficina.pdf 1 0.4883 CONTRATO DE ARRENDAMIENTO DE LOCAL DE OFICINA
+ N┬║ CA-2025-118 ┬À Madrid, 15 de diciembre de 2025
+ Arrendador: Inmobiliari 15 CONTRATO DE ARRENDAMIENTO DE LOCAL DE OFICINA
+N┬║ CA-2025-118 ┬À Madrid, 15 de diciembre de 2025
+Arrendador: Inmobiliaria Retiro S.L., NIF B85678912.
+Arrendatario: Estudio ├ümbar S.L., NIF B12345674.
+Objeto: local de 65 m2 en Calle del Pez 12, bajo, 28004
+3 contrato-senaletica-vallecas.pdf 1 0.4720 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+ [p├ígina 2]
+ Cl├íusula 3. Penalizaci├│n: por cada s 16 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+[p├ígina 2]
+Cl├íusula 3. Penalizaci├│n: por cada semana de retraso en la entrega se descontar├í un 2 % del precio, hasta un m├íximo del 10 %.
+Cl├íusula 4. Propiedad intelectual: el cliente
+4 nda-laura-mendez.pdf 1 0.4621 ACUERDO DE CONFIDENCIALIDAD
+ N┬║ NDA-2026-007 ┬À 1 de junio de 2026
+ Partes: Estudio ├ümbar S.L. (NIF B12345674) y Laura M├® 17 ACUERDO DE CONFIDENCIALIDAD
+N┬║ NDA-2026-007 ┬À 1 de junio de 2026
+Partes: Estudio ├ümbar S.L. (NIF B12345674) y Laura M├®ndez Ortega (NIF 50123456K), ilustradora colaboradora.
+Las partes se obligan a no divulgar la informaci├│n de clientes a la que tengan a
+
+3_contexto_enviado_al_modelo
+----------------------------
+[1] contrato-alquiler-oficina.pdf ┬À p. 1
+os los cinco primeros d├¡as de cada mes.
+[p├ígina 2]
+Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+Cl├íusula 4. Preaviso: cualquiera de las partes podr├í resolver el contrato avisando con dos meses de antelaci
+
+4_respuesta camino modelo milisegundos
+----------- ------ ------ ------------
+Debo avisar con dos meses de antelaci├│n si quiero dejar la oficina [1]. documentos qwen3:4b-instruct 52140
+
+1_pregunta
+----------
+┬┐Qu├® pasa si entregamos tarde los dise├▒os a Construcciones Vallecas?
+
+2_fuente archivo pagina similitud fragmento documento_id fragmento_completo
+-------- ------- ------ --------- --------- ------------ ------------------
+1 contrato-senaletica-vallecas.pdf 1 0.7027 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+ [p├ígina 2]
+ Cl├íusula 3. Penalizaci├│n: por cada s 16 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+[p├ígina 2]
+Cl├íusula 3. Penalizaci├│n: por cada semana de retraso en la entrega se descontar├í un 2 % del precio, hasta un m├íximo del 10 %.
+Cl├íusula 4. Propiedad intelectual: el cliente
+2 contrato-senaletica-vallecas.pdf 1 0.6333 CONTRATO DE PRESTACI├ôN DE SERVICIOS DE DISE├æO
+ N┬║ CS-2026-003 ┬À Madrid, 20 de febrero de 2026
+ Cliente: Construcciones V 16 CONTRATO DE PRESTACI├ôN DE SERVICIOS DE DISE├æO
+N┬║ CS-2026-003 ┬À Madrid, 20 de febrero de 2026
+Cliente: Construcciones Vallecas S.A., NIF A28765432.
+Proveedor: Estudio ├ümbar S.L., NIF B12345674.
+Objeto: dise├▒o de la se├▒al├®tica de obra y de fachada para l
+3 presupuesto-vallecas-fase2.pdf 1 0.5735 PRESUPUESTO P-2026-024 ┬À 01/10/2026
+ De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+ Fase 2 de se├▒al├®tica:  14 PRESUPUESTO P-2026-024 ┬À 01/10/2026
+De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+Fase 2 de se├▒al├®tica: dise├▒o de la se├▒alizaci├│n interior de 3 edificios de viviendas y planos de evacuaci├│n.
+Plazo: 10 semanas. Validez: 45 d├¡as.
+Base impon
+4 factura-2026-022.pdf 1 0.5072 FACTURA N┬║ 2026-022
+ Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+ Cliente: Construcciones Vallecas S.A. ┬À NIF A28765432
+  4 FACTURA N┬║ 2026-022
+Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+Cliente: Construcciones Vallecas S.A. ┬À NIF A28765432
+Fecha de emisi├│n: 30/03/2026
+Concepto: Primer hito del contrato de se├▒al├®tica de obra: dise├▒o de 40 carteles de seguridad y lonas de fa
+
+3_contexto_enviado_al_modelo
+----------------------------
+[1] contrato-senaletica-vallecas.pdf ┬À p. 1
+entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+[p├ígina 2]
+Cl├íusula 3. Penalizaci├│n: por cada semana de retraso en la entrega se descontar├í un 2 % del precio, hasta un m├íximo del 10 %.
+C
+
+4_respuesta camino modelo milisegundos
+----------- ------ ------ ------------
+Si se entregan los dise├▒os tarde, se descontar├í un 2 % del precio por cada semana de retraso, hasta un m├íximo del 10 % [1]. documentos qwen3:4b-instruct 49903
+
+1_pregunta
+----------
+┬┐Cu├ínto le he facturado a Pedro Garc├¡a este a├▒o?
+
+2_fuente archivo tipo direccion fecha importe moneda documento_id
+-------- ------- ---- --------- ----- ------- ------ ------------
+1 factura-2026-014.pdf factura emitido 2026-02-10 1210.00 EUR 1
+2 factura-2026-031.pdf factura emitido 2026-05-06 2100.00 EUR 2
+3 factura-2026-048.pdf factura emitido 2026-09-15 1510.00 EUR 3
+
+3_contexto_enviado_al_modelo
+----------------------------
+Intenci├│n: {"tipo_pregunta":"datos","tercero":"Pedro Garc├¡a","desde":"2026-01-01","hasta":"2026-12-31"}
+
+Tercero: Pedro Garc├¡a Ruiz
+Periodo: del 1/1/2026 al 31/12/2026
+Solo se cuentan los documentos que el usuario tiene permiso para ver.
+
+- facturas emitid
+
+4_respuesta camino cifras_verificadas modelo milisegundos
+----------- ------ ------------------ ------ ------------
+No he podido redactar la respuesta sin alterar las cifras (el modelo escribi├│ 014, 048, que no est├í en los datos). Estos son los datos calculados:
+Tercero: Pedro Garc├¡a Ruiz
+Periodo: del 1/1/2026 al 31/12/2026
+Solo se cuentan los documentos que el usuario  datos 0 qwen3:4b-instruct 26567
+
+1_pregunta
+----------
+┬┐En cu├íntos contratos aparece Tecnolog├¡as Arganzuela, cu├ínto les he pagado este a├▒o y en qu├® fechas?
+
+2_fuente archivo tipo direccion fecha importe moneda documento_id
+-------- ------- ---- --------- ----- ------- ------ ------------
+1 contrato-mantenimiento-web.pdf contrato NULL 2026-01-10 600.00 EUR 18
+2 arganzuela-hosting-enero.pdf factura recibido 2026-01-31 72.60 EUR 7
+3 arganzuela-hosting-febrero.pdf factura recibido 2026-02-28 72.60 EUR 8
+
+3_contexto_enviado_al_modelo
+----------------------------
+Intenci├│n: {"tipo_pregunta":"datos","tercero":"Tecnolog├¡as Arganzuela","desde":"2026-01-01","hasta":"2026-12-31"}
+
+Tercero: Tecnolog├¡as Arganzuela S.L.
+Periodo: del 1/1/2026 al 31/12/2026
+Solo se cuentan los documentos que el usuario tiene permiso para ver
+
+4_respuesta camino cifras_verificadas modelo milisegundos
+----------- ------ ------------------ ------ ------------
+En 1 contrato aparece Tecnolog├¡as Arganzuela. Les he pagado 145,20 EUR en las fechas 31/1/2026 y 28/2/2026.  
+contrato-mantenimiento-web.pdf  
+arganzuela-hosting-enero.pdf  
+arganzuela-hosting-febrero.pdf datos 1 qwen3:4b-instruct 23807
+
+1_pregunta
+----------
+┬┐Cu├íl es la contrase├▒a del wifi de la oficina?
+
+2_fuente archivo pagina similitud fragmento documento_id fragmento_completo
+-------- ------- ------ --------- --------- ------------ ------------------
+1 contrato-alquiler-oficina.pdf 1 0.4618 os los cinco primeros d├¡as de cada mes.
+ [p├ígina 2]
+ Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+ Cl├íusula 4. P 15 os los cinco primeros d├¡as de cada mes.
+[p├ígina 2]
+Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+Cl├íusula 4. Preaviso: cualquiera de las partes podr├í resolver el contrato avisando con dos meses de antelaci├│n por escrito.
+Cl├íusula 5. Actualizaci├│
+2 contrato-alquiler-oficina.pdf 1 0.4403 CONTRATO DE ARRENDAMIENTO DE LOCAL DE OFICINA
+ N┬║ CA-2025-118 ┬À Madrid, 15 de diciembre de 2025
+ Arrendador: Inmobiliari 15 CONTRATO DE ARRENDAMIENTO DE LOCAL DE OFICINA
+N┬║ CA-2025-118 ┬À Madrid, 15 de diciembre de 2025
+Arrendador: Inmobiliaria Retiro S.L., NIF B85678912.
+Arrendatario: Estudio ├ümbar S.L., NIF B12345674.
+Objeto: local de 65 m2 en Calle del Pez 12, bajo, 28004
+3 contrato-mantenimiento-web.pdf 1 0.4218 CONTRATO DE MANTENIMIENTO Y SOPORTE
+ N┬║ TA-SLA-2026 ┬À 10 de enero de 2026
+ Proveedor: Tecnolog├¡as Arganzuela S.L. (NIF B 18 CONTRATO DE MANTENIMIENTO Y SOPORTE
+N┬║ TA-SLA-2026 ┬À 10 de enero de 2026
+Proveedor: Tecnolog├¡as Arganzuela S.L. (NIF B84512367). Cliente: Estudio ├ümbar S.L.
+Servicio: mantenimiento de servidores y copias de seguridad diarias.
+Precio: 600,00 EUR al a├▒o.
+
+3_contexto_enviado_al_modelo
+----------------------------
+[1] contrato-alquiler-oficina.pdf ┬À p. 1
+os los cinco primeros d├¡as de cada mes.
+[p├ígina 2]
+Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+Cl├íusula 4. Preaviso: cualquiera de las partes podr├í resolver el contrato avisando con dos meses de antelaci
+
+4_respuesta camino modelo milisegundos
+----------- ------ ------ ------------
+No lo encuentro en los documentos. documentos qwen3:4b-instruct 18041
+
+pregunta respuesta_solo_llm milisegundos
+-------- ------------------ ------------
+┬┐Con cu├ínto tiempo de antelaci├│n tengo que avisar si quiero dejar la oficina? Depende de tu empresa, pero generalmente se recomienda avisar al menos 24 a 48 horas antes de salir. Si es un d├¡a laboral, es mejor que lo hagas al menos 24 horas antes. 7580
+

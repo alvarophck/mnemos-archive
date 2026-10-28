@@ -1,0 +1,20 @@
+@page "/Error"
+@using System.Diagnostics
+@attribute [ExcludeFromInteractiveRouting]
+
+<PageTitle>@L["ErrorTitulo"] · Mnemos Archive</PageTitle>
+
+<div class="encabezado">
+    <h1 tabindex="-1">@L["ErrorTitulo"]</h1>
+    <p>@L["ErrorTexto"]</p>
+</div>
+@if (!string.IsNullOrEmpty(requestId))
+{
+    <p class="muted pequeno">@L["ErrorReferencia"] <span class="mono">@requestId</span></p>
+}
+
+@code {
+    [CascadingParameter] private HttpContext? HttpContext { get; set; }
+    private string? requestId;
+    protected override void OnInitialized() => requestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+}

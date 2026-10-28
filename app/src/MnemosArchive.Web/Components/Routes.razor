@@ -1,0 +1,27 @@
+<CascadingValue Value="perfil" IsFixed="true">
+    <Router AppAssembly="typeof(Program).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+            <FocusOnNavigate RouteData="routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <LayoutView Layout="typeof(Layout.MainLayout)">
+                <PageTitle>@L["NoEncontradaTitulo"] · Mnemos Archive</PageTitle>
+                <div class="encabezado">
+                    <h1 tabindex="-1">@L["NoEncontradaTitulo"]</h1>
+                    <p>@L["NoEncontradaTexto"]</p>
+                </div>
+                <a class="boton" href="/">@L["IrAPreguntar"]</a>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingValue>
+
+@code {
+    /// <summary>Perfil leído de la cookie en el primer render (en el circuito ya no hay HttpContext).</summary>
+    [Parameter] public string? PerfilCodigo { get; set; }
+
+    private Perfil perfil;
+
+    protected override void OnParametersSet() => perfil = PerfilExtensiones.DesdeCodigo(PerfilCodigo);
+}

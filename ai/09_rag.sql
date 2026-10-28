@@ -1,5 +1,5 @@
 /* =====================================================================
-   Mnemos Archive · ai/08_rag.sql
+   Mnemos Archive · ai/09_rag.sql
    Bloque G: RAG (Retrieval-Augmented Generation) con modelo local.
 
      Pregunta
@@ -14,6 +14,10 @@
      1. la pregunta  2. los documentos recuperados
      3. el contexto que recibe el modelo  4. la respuesta final
    y lo guarda todo en archivo.consultas_rag.
+
+   Al final está el enrutador archivo.usp_preguntar: decide si una pregunta
+   es de contenido (RAG, este archivo) o de datos (contar, sumar, fechas:
+   ai/08_consultas_de_datos.sql).
    ===================================================================== */
 SET ANSI_NULLS ON;
 SET QUOTED_IDENTIFIER ON;
@@ -21,10 +25,11 @@ GO
 USE MnemosArchive;
 GO
 
-CREATE OR ALTER PROCEDURE archivo.usp_preguntar
+CREATE OR ALTER PROCEDURE archivo.usp_preguntar_documentos
     @pregunta       nvarchar(1000),
     @top_k          int   = 4,
-    @distancia_max  float = 0.60    -- más lejos que esto no se considera relevante (ajustable)
+    @distancia_max  float = 0.60,   -- más lejos que esto no se considera relevante (ajustable)
+    @duracion_previa_ms int = 0     -- tiempo ya gastado por el enrutador
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -108,6 +113,8 @@ No inventes datos, fechas ni importes. Si sumas importes, muestra la operación.
                                   @respuesta = @respuesta OUTPUT, @duracion_ms = @ms OUTPUT;
     END
 
+    SET @ms += @duracion_previa_ms;
+
     /* 4. Trazabilidad */
     DECLARE @docs_json nvarchar(max) =
         (SELECT n, archivo, pagina, CAST(1 - distancia AS decimal(5,4)) AS similitud
@@ -121,12 +128,47 @@ No inventes datos, fechas ni importes. Si sumas importes, muestra la operación.
 
     SELECT n AS [2_fuente], archivo, pagina,
            CAST(1 - distancia AS decimal(5,4)) AS similitud,
-           LEFT(REPLACE(texto, NCHAR(10), N' '), 120) AS fragmento
+           LEFT(REPLACE(texto, NCHAR(10), N' '), 120) AS fragmento,
+           documento_id, texto AS fragmento_completo     -- para la app: citar el pasaje y abrir el documento
     FROM @recuperados ORDER BY n;
 
     SELECT @contexto AS [3_contexto_enviado_al_modelo];
 
-    SELECT @respuesta AS [4_respuesta], @modelo AS modelo, @ms AS milisegundos;
+    SELECT @respuesta AS [4_respuesta], 'documentos' AS camino, @modelo AS modelo, @ms AS milisegundos;
+END;
+GO
+
+/* ---------------------------------------------------------------------
+   Enrutador: la única puerta para preguntar
+     "¿qué dice el contrato sobre...?"          -> documentos (RAG)
+     "¿cuánto he pagado a X este año?"          -> datos (SQL calcula, el LLM redacta)
+   @modo = 'auto' (el LLM clasifica la pregunta), 'documentos' o 'datos'.
+   --------------------------------------------------------------------- */
+CREATE OR ALTER PROCEDURE archivo.usp_preguntar
+    @pregunta       nvarchar(1000),
+    @modo           varchar(10) = 'auto',
+    @top_k          int   = 4,
+    @distancia_max  float = 0.60
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @modo NOT IN ('auto', 'documentos', 'datos')
+        THROW 50040, 'El modo tiene que ser auto, documentos o datos.', 1;
+
+    DECLARE @intencion nvarchar(max), @ms int = 0;
+
+    IF @modo IN ('auto', 'datos')
+        EXEC archivo.usp_interpretar_pregunta @pregunta = @pregunta,
+             @intencion = @intencion OUTPUT, @duracion_ms = @ms OUTPUT;
+
+    IF @modo = 'datos'
+       OR (@modo = 'auto' AND JSON_VALUE(@intencion, '$.tipo_pregunta') = 'datos')
+        EXEC archivo.usp_preguntar_datos @pregunta = @pregunta,
+             @intencion = @intencion, @duracion_previa_ms = @ms;
+    ELSE
+        EXEC archivo.usp_preguntar_documentos @pregunta = @pregunta, @top_k = @top_k,
+             @distancia_max = @distancia_max, @duracion_previa_ms = @ms;
 END;
 GO
 
@@ -152,7 +194,8 @@ GO
    --------------------------------------------------------------------- */
 EXEC archivo.usp_preguntar N'¿Con cuánto tiempo de antelación tengo que avisar si quiero dejar la oficina?';
 EXEC archivo.usp_preguntar N'¿Qué pasa si entregamos tarde los diseños a Construcciones Vallecas?';
-EXEC archivo.usp_preguntar N'¿Cuánto le he facturado a Pedro García este año?', @top_k = 6;
+EXEC archivo.usp_preguntar N'¿Cuánto le he facturado a Pedro García este año?';               -- datos
+EXEC archivo.usp_preguntar N'¿En cuántos contratos aparece Tecnologías Arganzuela, cuánto les he pagado este año y en qué fechas?';
 EXEC archivo.usp_preguntar N'¿Cuál es la contraseña del wifi de la oficina?';   -- no está: debe decirlo
 
 -- LLM solo vs RAG con la misma pregunta

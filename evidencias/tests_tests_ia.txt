@@ -7,21 +7,36 @@ OK  4 clasificaci├│n y enlace con el tercero
 ----------
 ┬┐Qu├® penalizaci├│n hay si se entrega tarde la se├▒al├®tica?
 
-2_fuente archivo pagina similitud fragmento
--------- ------- ------ --------- ---------
+2_fuente archivo pagina similitud fragmento documento_id fragmento_completo
+-------- ------- ------ --------- --------- ------------ ------------------
 1 contrato-senaletica-vallecas.pdf 1 0.5813 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
  [p├ígina 2]
- Cl├íusula 3. Penalizaci├│n: por cada s
+ Cl├íusula 3. Penalizaci├│n: por cada s 16 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+[p├ígina 2]
+Cl├íusula 3. Penalizaci├│n: por cada semana de retraso en la entrega se descontar├í un 2 % del precio, hasta un m├íximo del 10 %.
+Cl├íusula 4. Propiedad intelectual: el cliente
 2 contrato-senaletica-vallecas.pdf 1 0.5284 CONTRATO DE PRESTACI├ôN DE SERVICIOS DE DISE├æO
  N┬║ CS-2026-003 ┬À Madrid, 20 de febrero de 2026
- Cliente: Construcciones V
+ Cliente: Construcciones V 16 CONTRATO DE PRESTACI├ôN DE SERVICIOS DE DISE├æO
+N┬║ CS-2026-003 ┬À Madrid, 20 de febrero de 2026
+Cliente: Construcciones Vallecas S.A., NIF A28765432.
+Proveedor: Estudio ├ümbar S.L., NIF B12345674.
+Objeto: dise├▒o de la se├▒al├®tica de obra y de fachada para l
 3 presupuesto-vallecas-fase2.pdf 1 0.5176 PRESUPUESTO P-2026-024 ┬À 01/10/2026
  De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
- Fase 2 de se├▒al├®tica: 
+ Fase 2 de se├▒al├®tica:  14 PRESUPUESTO P-2026-024 ┬À 01/10/2026
+De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+Fase 2 de se├▒al├®tica: dise├▒o de la se├▒alizaci├│n interior de 3 edificios de viviendas y planos de evacuaci├│n.
+Plazo: 10 semanas. Validez: 45 d├¡as.
+Base impon
 4 factura-2026-022.pdf 1 0.4759 FACTURA N┬║ 2026-022
  Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
  Cliente: Construcciones Vallecas S.A. ┬À NIF A28765432
- 
+  4 FACTURA N┬║ 2026-022
+Emisor: Estudio ├ümbar S.L. ┬À NIF B12345674
+Cliente: Construcciones Vallecas S.A. ┬À NIF A28765432
+Fecha de emisi├│n: 30/03/2026
+Concepto: Primer hito del contrato de se├▒al├®tica de obra: dise├▒o de 40 carteles de seguridad y lonas de fa
 
 3_contexto_enviado_al_modelo
 ----------------------------
@@ -31,23 +46,31 @@ entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
 Cl├íusula 3. Penalizaci├│n: por cada semana de retraso en la entrega se descontar├í un 2 % del precio, hasta un m├íximo del 10 %.
 C
 
-4_respuesta modelo milisegundos
------------ ------ ------------
-Por cada semana de retraso en la entrega se descontar├í un 2 % del precio, hasta un m├íximo del 10 % [1]. qwen3:4b-instruct 5137
+4_respuesta camino modelo milisegundos
+----------- ------ ------ ------------
+Por cada semana de retraso en la entrega se descontar├í un 2 % del precio, hasta un m├íximo del 10 % [1]. documentos qwen3:4b-instruct 11020
 
 OK  5 RAG con trazabilidad
 1_pregunta
 ----------
 ┬┐Con cu├ínto tiempo de antelaci├│n tengo que avisar si quiero dejar la oficina?
 
-2_fuente archivo pagina similitud fragmento
--------- ------- ------ --------- ---------
+2_fuente archivo pagina similitud fragmento documento_id fragmento_completo
+-------- ------- ------ --------- --------- ------------ ------------------
 1 presupuesto-vallecas-fase2.pdf 1 0.4484 PRESUPUESTO P-2026-024 ┬À 01/10/2026
  De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
- Fase 2 de se├▒al├®tica: 
+ Fase 2 de se├▒al├®tica:  14 PRESUPUESTO P-2026-024 ┬À 01/10/2026
+De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+Fase 2 de se├▒al├®tica: dise├▒o de la se├▒alizaci├│n interior de 3 edificios de viviendas y planos de evacuaci├│n.
+Plazo: 10 semanas. Validez: 45 d├¡as.
+Base impon
 2 presupuesto-cafe-malasana-web.pdf 1 0.4193 PRESUPUESTO P-2026-019 ┬À 02/09/2026
  De: Estudio ├ümbar S.L. ┬À Para: Caf├® Malasa├▒a S.L.
- Proyecto: tienda online de caf├® 
+ Proyecto: tienda online de caf├®  13 PRESUPUESTO P-2026-019 ┬À 02/09/2026
+De: Estudio ├ümbar S.L. ┬À Para: Caf├® Malasa├▒a S.L.
+Proyecto: tienda online de caf├® en grano con pasarela de pago y 20 fichas de producto.
+Plazo de entrega: 8 semanas desde la aceptaci├│n.
+Validez de la oferta: 30 d├¡as.
 
 3_contexto_enviado_al_modelo
 ----------------------------
@@ -57,10 +80,37 @@ De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
 Fase 2 de se├▒al├®tica: dise├▒o de la se├▒alizaci├│n interior de 3 edificios de viviendas y planos de evacuaci├│n.
 Plazo:
 
-4_respuesta modelo milisegundos
------------ ------ ------------
-No lo encuentro en los documentos. qwen3:4b-instruct 1136
+4_respuesta camino modelo milisegundos
+----------- ------ ------ ------------
+No lo encuentro en los documentos. documentos qwen3:4b-instruct 4689
 
 OK  6 RAG filtrado por permisos
+OK  7 datos calculados por SQL (sin "tildes" y con nombre parcial)
+OK  8 tercero inexistente
+OK  9 comprobaci├│n de cifras
+1_pregunta
+----------
+┬┐Cu├ínto le he pagado a Tecnolog├¡as Arganzuela este a├▒o?
+
+2_fuente archivo tipo direccion fecha importe moneda documento_id
+-------- ------- ---- --------- ----- ------- ------ ------------
+1 contrato-mantenimiento-web.pdf contrato NULL 2026-01-10 600.00 EUR 18
+2 arganzuela-hosting-enero.pdf factura recibido 2026-01-31 72.60 EUR 7
+3 arganzuela-hosting-febrero.pdf factura recibido 2026-02-28 72.60 EUR 8
+
+3_contexto_enviado_al_modelo
+----------------------------
+Intenci├│n: {"tipo_pregunta":"datos","tercero":"Tecnolog├¡as Arganzuela","desde":"2026-01-01","hasta":"2026-12-31"}
+
+Tercero: Tecnolog├¡as Arganzuela S.L.
+Periodo: del 1/1/2026 al 31/12/2026
+Solo se cuentan los documentos que el usuario tiene permiso para ver
+
+4_respuesta camino cifras_verificadas modelo milisegundos
+----------- ------ ------------------ ------ ------------
+Le has pagado un total de 145,20 EUR a Tecnolog├¡as Arganzuela este a├▒o.  
+Los datos provienen del archivo arganzuela-hosting-enero.pdf y arganzuela-hosting-febrero.pdf. datos 1 qwen3:4b-instruct 14095
+
+OK  10 pregunta de datos de principio a fin
  
 Pruebas de IA superadas.

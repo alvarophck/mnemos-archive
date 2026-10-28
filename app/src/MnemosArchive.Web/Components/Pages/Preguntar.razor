@@ -1,0 +1,263 @@
+@page "/"
+@implements IDisposable
+@inject ArchivoDb Db
+
+<PageTitle>@L["NavPreguntar"] · Mnemos Archive</PageTitle>
+
+<div class="encabezado">
+    <h1 tabindex="-1">@L["PreguntarTitulo"]</h1>
+    <p>@L["PreguntarIntro"]</p>
+</div>
+
+<form class="caja-pregunta" @onsubmit="Enviar" @onsubmit:preventDefault>
+    <label for="pregunta" class="etiqueta">@L["TuPregunta"]</label>
+    <textarea id="pregunta" @bind="pregunta" @bind:event="oninput" @onkeydown="Tecla"
+              rows="3" maxlength="1000" placeholder="@L["PreguntaEjemplo"]" disabled="@preguntando"
+              aria-describedby="ayuda-pregunta"></textarea>
+    <div class="acciones">
+        <button type="submit" class="boton-primario" disabled="@(preguntando || string.IsNullOrWhiteSpace(pregunta))">@L["BotonPreguntar"]</button>
+        <span id="ayuda-pregunta" class="muted pequeno">@L["AyudaPregunta"]</span>
+    </div>
+</form>
+
+<div aria-live="polite" class="pila" style="margin-top: var(--space-5)">
+    @if (preguntando)
+    {
+        <p class="esperando aparece">
+            <span>@L["Buscando"]</span>
+            <span class="mono">@segundos s</span>
+        </p>
+    }
+</div>
+
+@if (turnos.Count == 0 && !preguntando)
+{
+    <section class="vacio aparece" aria-labelledby="sin-preguntas">
+        <Memo />
+        <h2 id="sin-preguntas">@L["SinPreguntasTitulo"]</h2>
+        <p>@L["SinPreguntasTexto"]</p>
+        <div class="sugerencias" role="list">
+            @foreach (var ejemplo in Ejemplos)
+            {
+                <button type="button" role="listitem" @onclick="() => Usar(ejemplo)">@ejemplo</button>
+            }
+        </div>
+    </section>
+}
+
+<div class="pila-grande" style="margin-top: var(--space-5)">
+    @foreach (var turno in turnos)
+    {
+        <article class="tarjeta turno aparece" aria-labelledby="@($"p-{turno.Id}")">
+            <p class="turno-pregunta" id="@($"p-{turno.Id}")">@turno.Pregunta</p>
+
+            @if (turno.Error is not null)
+            {
+                <div class="error" role="alert">
+                    <Icono Nombre="alerta" />
+                    <span><strong>@L["NoSePudoResponder"]</strong> @turno.Error</span>
+                </div>
+            }
+            else if (turno.Respuesta is { } r)
+            {
+                <p class="respuesta-texto">
+                    @foreach (var s in Citas.Separar(r.Respuesta, r.Fuentes.Count))
+                    {
+                        if (s.Cita is { } n)
+                        {
+                            <a class="marca-cita" href="@($"#f-{turno.Id}-{n}")" aria-label="@string.Format(L["IrAFuente"], n)">[@n]</a>
+                        }
+                        else
+                        {
+                            @s.Texto
+                        }
+                    }
+                </p>
+
+                @if (!string.IsNullOrEmpty(r.Calculo))
+                {
+                    <p class="calculo">
+                        <span class="etiqueta">@L["CuentaHechaPorSql"]</span>
+                        <span class="mono">@r.Calculo</span>
+                    </p>
+                }
+
+                <div class="metadatos">
+                    @if (r.EsDatos)
+                    {
+                        <span class="insignia insignia-marca"><Icono Nombre="tabla" /> @L["CaminoDatos"]</span>
+                        @if (r.CifrasVerificadas == true)
+                        {
+                            <span class="insignia"><Icono Nombre="ok" /> @L["CifrasComprobadas"]</span>
+                        }
+                        else if (r.CifrasVerificadas == false)
+                        {
+                            <span class="insignia"><Icono Nombre="alerta" /> @L["CifrasNoComprobadas"]</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="insignia insignia-marca"><Icono Nombre="texto" /> @L["CaminoDocumentos"]</span>
+                    }
+                    @if (r.Milisegundos is { } ms)
+                    {
+                        <span class="mono muted">@((ms / 1000d).ToString("N1", CultureInfo.CurrentCulture)) s · @r.Modelo</span>
+                    }
+                </div>
+
+                @if (r.Fuentes.Count > 0)
+                {
+                    <section aria-label="@L["Fuentes"]" class="pila">
+                        <h3>@(r.EsDatos ? L["DocumentosUsados"] : L["Fuentes"])</h3>
+                        @if (r.EsDatos)
+                        {
+                            <div class="tabla-contenedor">
+                                <table class="apilable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">@L["ColFecha"]</th>
+                                            <th scope="col" class="numero">@L["ColImporte"]</th>
+                                            <th scope="col">@L["ColDocumento"]</th>
+                                            <th scope="col">@L["ColClase"]</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var f in r.Fuentes)
+                                        {
+                                            <tr id="@($"f-{turno.Id}-{f.N}")">
+                                                <td class="fecha">@Preferencias.Fecha(f.Fecha)</td>
+                                                <td class="numero">@Preferencias.Importe(f.Importe, f.Moneda)</td>
+                                                <td class="ancha"><Chip Fuente="f" /></td>
+                                                <td class="ancha">@Clase(f)</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            var citadas = Citas.Citadas(r.Respuesta, r.Fuentes.Count);
+                            <ol class="fuentes">
+                                @foreach (var f in r.Fuentes.Where(f => citadas.Count == 0 || citadas.Contains(f.N)))
+                                {
+                                    <li class="fuente" id="@($"f-{turno.Id}-{f.N}")">
+                                        <div class="fuente-cabecera">
+                                            <span class="mono muted">[@f.N]</span>
+                                            <Chip Fuente="f" />
+                                            @if (f.Similitud is { } sim)
+                                            {
+                                                <span class="mono muted pequeno">@string.Format(L["Similitud"], sim.ToString("N2", CultureInfo.CurrentCulture))</span>
+                                            }
+                                        </div>
+                                        <blockquote class="pasaje"><mark>@Pasaje(f.Pasaje)</mark></blockquote>
+                                    </li>
+                                }
+                            </ol>
+                            @if (citadas.Count > 0 && citadas.Count < r.Fuentes.Count)
+                            {
+                                <p class="muted pequeno">@string.Format(L["OtrasFuentes"], r.Fuentes.Count - citadas.Count)</p>
+                            }
+                        }
+                    </section>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(r.Contexto))
+                {
+                    <details>
+                        <summary>@L["VerContexto"]</summary>
+                        <pre>@r.Contexto</pre>
+                    </details>
+                }
+            }
+        </article>
+    }
+</div>
+
+@code {
+    [CascadingParameter] private Perfil Perfil { get; set; }
+
+    private sealed record Turno(int Id, string Pregunta, RespuestaPregunta? Respuesta, string? Error);
+
+    private readonly List<Turno> turnos = [];
+    private string pregunta = "";
+    private bool preguntando;
+    private int segundos;
+    private int siguienteId;
+    private CancellationTokenSource? cancelar;
+
+    private string[] Ejemplos => [L["Ejemplo1"], L["Ejemplo2"], L["Ejemplo3"], L["Ejemplo4"]];
+
+    private async Task Usar(string ejemplo)
+    {
+        pregunta = ejemplo;
+        await Enviar();
+    }
+
+    private async Task Tecla(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && (e.CtrlKey || e.MetaKey))
+            await Enviar();
+    }
+
+    private async Task Enviar()
+    {
+        var texto = pregunta.Trim();
+        if (preguntando || texto.Length == 0)
+            return;
+
+        preguntando = true;
+        segundos = 0;
+        cancelar = new CancellationTokenSource();
+        var reloj = ContarSegundos(cancelar.Token);
+
+        try
+        {
+            var respuesta = await Db.PreguntarAsync(texto, Perfil, cancelar.Token);
+            turnos.Insert(0, new Turno(++siguienteId, texto, respuesta, null));
+            pregunta = "";
+        }
+        catch (ArchivoException ex)
+        {
+            turnos.Insert(0, new Turno(++siguienteId, texto, null, ex.Clave is not null ? L[ex.Clave] : ex.MensajeSql));
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+        finally
+        {
+            preguntando = false;
+            cancelar?.Cancel();
+            await reloj;
+        }
+    }
+
+    private async Task ContarSegundos(CancellationToken ct)
+    {
+        using var temporizador = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        try
+        {
+            while (await temporizador.WaitForNextTickAsync(ct))
+            {
+                segundos++;
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch (OperationCanceledException) { }
+    }
+
+    private string Clase(Fuente f) => L[$"Clase_{f.Tipo}_{f.Direccion ?? "ninguna"}"] is { ResourceNotFound: false } t
+        ? t.Value
+        : L[$"Tipo_{f.Tipo}"];
+
+    /// <summary>El pasaje tal como está en el documento, sin la cabecera técnica con la que se vectorizó.</summary>
+    private static string Pasaje(string? texto) =>
+        string.IsNullOrWhiteSpace(texto) ? "" : texto.Trim();
+
+    public void Dispose()
+    {
+        cancelar?.Cancel();
+        cancelar?.Dispose();
+    }
+}

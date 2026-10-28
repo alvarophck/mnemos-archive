@@ -25,12 +25,15 @@ Escenario de ejemplo: **Estudio Ámbar S.L.**, un estudio de diseño ficticio co
 ## Arquitectura
 
 ```
-                     ┌──────────────────────────┐
-                     │ Usuario (SSMS / sqlcmd)  │
-                     │ admin · contable · legal │
-                     └────────────┬─────────────┘
-                                  │ T-SQL
-                                  ▼
+          ┌───────────────────────────────┐   ┌──────────────────────────┐
+          │ App en el navegador (.NET 9)  │   │ SSMS / sqlcmd            │
+          │ Archivar · Preguntar · Docs   │   │ admin · contable · legal │
+          │ lee los PDF (PdfPig) y guarda │   └────────────┬─────────────┘
+          │ el original en una carpeta    │                │
+          └───────────────┬───────────────┘                │
+                          │ llama a los mismos procedimientos
+                          └───────────────┬────────────────┘
+                                          ▼
    ┌─────────────────────────────────────────────────────────────┐
    │                 SQL Server 2025 · MnemosArchive             │
    │                                                             │
@@ -70,6 +73,8 @@ Más detalle (modelo de datos y flujos) en [docs/arquitectura.md](docs/arquitect
 SQL Server 2025 (Enterprise Developer)   T-SQL   SSMS 21/22
 Ollama   bge-m3 (MIT)   qwen3:4b-instruct (Apache 2.0)   Caddy (Apache 2.0)
 Git   GitHub   PowerShell   Claude (asistente de IA, ver Bloque B)
+App:  .NET 9 · Blazor (servidor) · Microsoft.Data.SqlClient · PdfPig (Apache 2.0)
+      Fraunces e IBM Plex (OFL), servidas desde la propia app
 ```
 
 ## Funcionalidades DP-800 implementadas
@@ -101,6 +106,9 @@ Git   GitHub   PowerShell   Claude (asistente de IA, ver Bloque B)
 ```
 mnemos-archive/
 ├── README.md
+├── app/                           la app en el navegador (Blazor, .NET 9)
+│   ├── src/MnemosArchive.Web/     páginas, acceso a SQL, lector de PDF, textos es/en
+│   └── tests/MnemosArchive.Tests/ pruebas de la app (xUnit)
 ├── database/
 │   ├── 01_create_database.sql     compatibilidad 170, PREVIEW_FEATURES, esquema archivo
 │   ├── 02_create_tables.sql       6 tablas con sus restricciones
@@ -122,8 +130,9 @@ mnemos-archive/
 │   ├── 05_hybrid_search.sql
 │   ├── 06_llm_chat.sql            llamada al LLM desde T-SQL
 │   ├── 07_classify_and_extract.sql  el LLM clasifica los documentos nuevos
-│   ├── 08_rag.sql
-│   └── 09_ai_permissions.sql      permisos y RAG con Row-Level Security
+│   ├── 08_consultas_de_datos.sql  preguntas de datos: el LLM entiende, SQL calcula, el LLM redacta
+│   ├── 09_rag.sql                 RAG y enrutador (usp_preguntar)
+│   └── 10_ai_permissions.sql      permisos y RAG con Row-Level Security
 ├── tests/
 │   ├── tests.sql
 │   └── tests_ia.sql
@@ -198,6 +207,27 @@ Cada script deja su salida en `evidencias\`. También se pueden abrir y ejecutar
 
 No hay contraseñas en el repositorio: la conexión usa autenticación de Windows y los usuarios de demostración se crean `WITHOUT LOGIN` y se prueban con `EXECUTE AS USER`.
 
+## La app
+
+Con la base de datos instalada, la app pone una interfaz encima de los mismos procedimientos: archivar PDFs, preguntar y ver los documentos.
+
+```powershell
+winget install Microsoft.DotNet.SDK.9     # solo la primera vez
+.\scripts\abrir-app.ps1                    # abre http://127.0.0.1:5080 en el navegador
+```
+
+| Pantalla | Qué hace | Qué llama en SQL Server |
+|---|---|---|
+| **Preguntar** | Respuesta primero y fuentes debajo: chips `archivo · p. N` y el pasaje resaltado. En las preguntas de datos, la tabla de documentos usados y si las cifras se comprobaron | `usp_preguntar` (enrutador datos / RAG) |
+| **Archivar** | Arrastras PDFs; la app lee el texto página a página, guarda el original y la IA local lo clasifica | `usp_archivar_documento`, `usp_clasificar_y_extraer`, `usp_generar_embeddings` |
+| **Documentos** | Lista con filtros, ficha con los campos leídos, el texto por páginas, el PDF original, volver a leer con la IA y borrado RGPD | `archivo.documentos`, `usp_borrar_documento` |
+
+- **Solo en este ordenador.** La app escucha en `127.0.0.1`, las fuentes tipográficas van dentro de la app y los PDF se guardan en `%LOCALAPPDATA%\Mnemos Archive\documentos` con el SHA-256 como nombre. En la base de datos solo se guarda ese nombre (`documentos.archivo_local`).
+- **Ver como.** Un selector cambia los permisos con los que se consulta (`EXECUTE AS USER` con `usr_contable` o `usr_legal`): la misma pregunta devuelve respuestas distintas según el departamento, por Row-Level Security.
+- **Escaneos.** Un PDF sin texto (una foto) no se archiva: la app lo dice. El OCR queda para otra versión.
+- **Idiomas y temas.** Español e inglés; tema claro (Paper) y oscuro (Night archive), por defecto el del sistema. Las respuestas del modelo siguen en español, porque las instrucciones del modelo están en español.
+- **Pruebas.** `dotnet test app` ejecuta 26 pruebas: lectura de PDF con marcas de página, escaneos, citas, almacenamiento seguro, perfiles y que todos los textos existen en los dos idiomas.
+
 ## Base de datos
 
 | Tabla | Qué guarda | Claves y restricciones |
@@ -257,13 +287,36 @@ EXEC archivo.usp_buscar_semantica N'cláusula de entrega antes del verano';
 -- 1º contrato-senaletica-vallecas.pdf: "...se entregarán antes del 30 de junio..."
 ```
 
-**RAG** (`ai/08_rag.sql`)
+**RAG** (`ai/09_rag.sql`)
 
 ```sql
 EXEC archivo.usp_preguntar N'¿Con cuánto tiempo de antelación tengo que avisar si quiero dejar la oficina?';
 ```
 
-Devuelve, por separado: la pregunta, los fragmentos recuperados con su similitud, el contexto exacto enviado al modelo y la respuesta con su cita (`[1] contrato-alquiler-oficina.pdf · p. 2`). Las salidas reales de tu ejecución quedan en `evidencias\ai_08_rag.txt`.
+Devuelve, por separado: la pregunta, los fragmentos recuperados con su similitud, el contexto exacto enviado al modelo y la respuesta con su cita (`[1] contrato-alquiler-oficina.pdf · p. 2`). Las salidas reales de tu ejecución quedan en `evidencias\ai_09_rag.txt`.
+
+**Preguntas de datos** (`ai/08_consultas_de_datos.sql`)
+
+```sql
+EXEC archivo.usp_preguntar N'¿En cuántos contratos aparece Tecnologías Arganzuela, cuánto les he pagado este año y en qué fechas?';
+-- "Aparece en 1 contrato. En 2026 le has pagado 145,20 EUR en 2 facturas: el 31/1/2026 y el 28/2/2026."
+```
+
+El RAG no sirve para contar ni sumar: solo ve los 4 fragmentos más parecidos a la pregunta. Para estas preguntas, `usp_preguntar` usa otro camino:
+
+```
+1. ENTENDER  el LLM convierte la pregunta en un JSON fijo {tipo_pregunta, tercero, desde, hasta}
+             (no escribe SQL: no puede romper nada ni saltarse los permisos)
+2. CALCULAR  T-SQL busca el tercero (sin tildes, nombre parcial o Jaro-Winkler) y cuenta,
+             suma y lista fechas, con Row-Level Security
+3. REDACTAR  el LLM escribe la respuesta con esas cifras
+4. COMPROBAR T-SQL extrae cada número de la respuesta (REGEXP_MATCHES); si alguno no está en
+             los datos calculados, descarta el texto del modelo y devuelve los datos tal cual
+```
+
+Si el tercero no existe ("No hay ningún tercero parecido a «Pepinos en salsa»") o el nombre es ambiguo, responde SQL directamente, sin llamar al modelo.
+
+También hace cuentas con esas cifras, pero las hace SQL: "¿cuánto es el doble de lo que le he pagado a Arganzuela?" → `145,20 EUR × 2 = 290,40 EUR`. Multiplicar, dividir, porcentaje, sumar, restar, media por documento y comparar dos periodos; lo que no está en la lista se responde con "Ese cálculo no lo hago". `@modo = 'documentos'` o `'datos'` fuerza un camino.
 
 ### LLM frente a RAG
 
@@ -286,7 +339,7 @@ La búsqueda es exacta (recorre todos los fragmentos): con unos cientos tarda mi
 
 ## Bloque B: desarrollo asistido por IA
 
-El proyecto se desarrolló con **Claude** (Anthropic) como asistente. En [docs/ia-asistida.md](docs/ia-asistida.md) están los casos documentados: el prompt, la respuesta, qué se aceptó, qué se corrigió y cómo se verificó. Entre ellos, cuatro errores reales del código generado que aparecieron al ejecutarlo y se corrigieron.
+El proyecto se desarrolló con **Claude** (Anthropic) como asistente. En [docs/ia-asistida.md](docs/ia-asistida.md) están los casos documentados: el prompt, la respuesta, qué se aceptó, qué se corrigió y cómo se verificó. Entre ellos, siete errores reales del código generado que aparecieron al ejecutarlo y se corrigieron.
 
 ## Bloque D: optimización
 

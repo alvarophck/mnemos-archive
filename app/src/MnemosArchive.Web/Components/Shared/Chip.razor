@@ -1,0 +1,19 @@
+@* Chip de cita: "factura-2026-014.pdf · p. 1". Lleva a la ficha del documento, en esa página. *@
+@if (Fuente.DocumentoId is { } id)
+{
+    <a class="chip" href="@Enlace(id)" title="@Texto">@Texto</a>
+}
+else
+{
+    <span class="chip">@Texto</span>
+}
+
+@code {
+    [Parameter, EditorRequired] public Fuente Fuente { get; set; } = default!;
+
+    private string Texto => Fuente.Pagina is { } p
+        ? $"{Fuente.Archivo} · {string.Format(L["PaginaCorta"], p)}"
+        : Fuente.Archivo;
+
+    private string Enlace(int id) => Fuente.Pagina is { } p ? $"/documentos/{id}?pagina={p}#p-{p}" : $"/documentos/{id}";
+}

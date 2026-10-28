@@ -1,0 +1,21 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+clase documentos importe moneda en_todo_el_archivo
+----- ---------- ------- ------ ------------------
+contratos (el importe es lo pactado, no un pago) 1 600.00 EUR 1
+facturas recibidas (lo que has pagado) 2 145.20 EUR 2
+
+nombre_archivo tipo direccion tercero fecha importe moneda
+-------------- ---- --------- ------- ----- ------- ------
+contrato-mantenimiento-web.pdf contrato NULL Tecnolog├¡as Arganzuela S.L. 2026-01-10 600.00 EUR
+arganzuela-hosting-enero.pdf factura recibido Tecnolog├¡as Arganzuela S.L. 2026-01-31 72.60 EUR
+arganzuela-hosting-febrero.pdf factura recibido Tecnolog├¡as Arganzuela S.L. 2026-02-28 72.60 EUR
+
+datos_para_el_modelo
+--------------------
+Tercero: Tecnolog├¡as Arganzuela S.L.
+Periodo: del 1/1/2026 al 31/12/2026
+Solo se cuentan los documentos que el usuario tiene permiso para ver.
+
+- contratos (el importe es lo pactado, no un pago): 1 documento(s) en el periodo, importe total 600,00 EUR.
+    
+

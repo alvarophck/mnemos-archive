@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="SaltarAlContenido" xml:space="preserve"><value>Skip to content</value></data>
+  <data name="NavegacionPrincipal" xml:space="preserve"><value>Main navigation</value></data>
+  <data name="NavPreguntar" xml:space="preserve"><value>Ask</value></data>
+  <data name="NavArchivar" xml:space="preserve"><value>Archive</value></data>
+  <data name="NavDocumentos" xml:space="preserve"><value>Documents</value></data>
+  <data name="VerComo" xml:space="preserve"><value>View as</value></data>
+  <data name="AyudaPerfil" xml:space="preserve"><value>Changes the permissions used to query the archive, to see what each department sees.</value></data>
+  <data name="PerfilAdministracion" xml:space="preserve"><value>Administration</value></data>
+  <data name="PerfilContabilidad" xml:space="preserve"><value>Accounting</value></data>
+  <data name="PerfilLegal" xml:space="preserve"><value>Legal</value></data>
+  <data name="AvisoPerfil" xml:space="preserve"><value>You are viewing the archive as {0}. SQL Server only returns what that department is allowed to see.</value></data>
+  <data name="Idioma" xml:space="preserve"><value>Language</value></data>
+  <data name="Ajustes" xml:space="preserve"><value>Settings</value></data>
+  <data name="Tema" xml:space="preserve"><value>Theme</value></data>
+  <data name="TemaSistema" xml:space="preserve"><value>system</value></data>
+  <data name="Pie" xml:space="preserve"><value>Mnemos Archive runs only on this computer: documents, database and AI never leave it.</value></data>
+  <data name="ErrorConexionApp" xml:space="preserve"><value>The connection to the app was lost.</value></data>
+  <data name="Recargar" xml:space="preserve"><value>Reload</value></data>
+  <data name="NoEncontradaTitulo" xml:space="preserve"><value>This page does not exist</value></data>
+  <data name="NoEncontradaTexto" xml:space="preserve"><value>The address does not match any part of the archive.</value></data>
+  <data name="IrAPreguntar" xml:space="preserve"><value>Go to Ask</value></data>
+  <data name="ErrorTitulo" xml:space="preserve"><value>Something went wrong</value></data>
+  <data name="ErrorTexto" xml:space="preserve"><value>The app could not complete the request. Try again; if it happens again, check the window where the app is running.</value></data>
+  <data name="ErrorReferencia" xml:space="preserve"><value>Reference:</value></data>
+  <data name="Cargando" xml:space="preserve"><value>Loading…</value></data>
+  <data name="PreguntarTitulo" xml:space="preserve"><value>Ask your archive</value></data>
+  <data name="PreguntarIntro" xml:space="preserve"><value>Ask what a document says or ask for figures: how much you paid someone, on which dates, how many contracts you have. SQL Server calculates the figures and every answer shows where it comes from.</value></data>
+  <data name="TuPregunta" xml:space="preserve"><value>Your question</value></data>
+  <data name="PreguntaEjemplo" xml:space="preserve"><value>How much have I paid Tecnologías Arganzuela this year?</value></data>
+  <data name="BotonPreguntar" xml:space="preserve"><value>Ask</value></data>
+  <data name="AyudaPregunta" xml:space="preserve"><value>Ctrl + Enter also sends the question. The local model takes 10 to 60 seconds.</value></data>
+  <data name="Buscando" xml:space="preserve"><value>Searching your documents and preparing the answer.</value></data>
+  <data name="SinPreguntasTitulo" xml:space="preserve"><value>You have not asked anything yet</value></data>
+  <data name="SinPreguntasTexto" xml:space="preserve"><value>Try one of these questions or write your own.</value></data>
+  <data name="Ejemplo1" xml:space="preserve"><value>How much notice do I have to give if I want to leave the office?</value></data>
+  <data name="Ejemplo2" xml:space="preserve"><value>In how many contracts does Tecnologías Arganzuela appear, how much have I paid them this year and on which dates?</value></data>
+  <data name="Ejemplo3" xml:space="preserve"><value>What happens if we deliver the signage to Construcciones Vallecas late?</value></data>
+  <data name="Ejemplo4" xml:space="preserve"><value>What is 21% of what I invoiced Pedro García this year?</value></data>
+  <data name="NoSePudoResponder" xml:space="preserve"><value>The question could not be answered.</value></data>
+  <data name="IrAFuente" xml:space="preserve"><value>Go to source {0}</value></data>
+  <data name="CaminoDatos" xml:space="preserve"><value>Calculated by SQL Server</value></data>
+  <data name="CaminoDocumentos" xml:space="preserve"><value>Found in the text of your documents</value></data>
+  <data name="CuentaHechaPorSql" xml:space="preserve"><value>Calculated by SQL Server</value></data>
+  <data name="CifrasComprobadas" xml:space="preserve"><value>Figures checked</value></data>
+  <data name="CifrasNoComprobadas" xml:space="preserve"><value>The model changed a figure: the calculated data is shown</value></data>
+  <data name="Fuentes" xml:space="preserve"><value>Sources</value></data>
+  <data name="DocumentosUsados" xml:space="preserve"><value>Documents used in the calculation</value></data>
+  <data name="OtrasFuentes" xml:space="preserve"><value>{0} more passages were consulted but not cited.</value></data>
+  <data name="Similitud" xml:space="preserve"><value>similarity {0}</value></data>
+  <data name="VerContexto" xml:space="preserve"><value>See what the model received</value></data>
+  <data name="PaginaCorta" xml:space="preserve"><value>p. {0}</value></data>
+  <data name="ColFecha" xml:space="preserve"><value>Date</value></data>
+  <data name="ColDocumento" xml:space="preserve"><value>Document</value></data>
+  <data name="ColClase" xml:space="preserve"><value>What it is</value></data>
+  <data name="ColImporte" xml:space="preserve"><value>Amount</value></data>
+  <data name="ColTipo" xml:space="preserve"><value>Type</value></data>
+  <data name="ColTercero" xml:space="preserve"><value>Party</value></data>
+  <data name="ColNumero" xml:space="preserve"><value>Number</value></data>
+  <data name="ColCampo" xml:space="preserve"><value>Field</value></data>
+  <data name="ColValor" xml:space="preserve"><value>Value</value></data>
+  <data name="ColOrigen" xml:space="preserve"><value>Source</value></data>
+  <data name="Confianza" xml:space="preserve"><value>Confidence</value></data>
+  <data name="SinEnlazar" xml:space="preserve"><value>Not linked</value></data>
+  <data name="Tipo_factura" xml:space="preserve"><value>Invoice</value></data>
+  <data name="Tipo_contrato" xml:space="preserve"><value>Contract</value></data>
+  <data name="Tipo_presupuesto" xml:space="preserve"><value>Quote</value></data>
+  <data name="Tipo_recibo" xml:space="preserve"><value>Receipt</value></data>
+  <data name="Tipo_otro" xml:space="preserve"><value>Other</value></data>
+  <data name="Tipo_sin_clasificar" xml:space="preserve"><value>Unclassified</value></data>
+  <data name="Direccion_emitido" xml:space="preserve"><value>issued</value></data>
+  <data name="Direccion_recibido" xml:space="preserve"><value>received</value></data>
+  <data name="Clase_factura_recibido" xml:space="preserve"><value>Invoice received · paid</value></data>
+  <data name="Clase_factura_emitido" xml:space="preserve"><value>Invoice issued · invoiced</value></data>
+  <data name="Clase_recibo_recibido" xml:space="preserve"><value>Receipt received · paid</value></data>
+  <data name="Clase_recibo_emitido" xml:space="preserve"><value>Receipt issued · collected</value></data>
+  <data name="Clase_contrato_ninguna" xml:space="preserve"><value>Contract · agreed amount</value></data>
+  <data name="Clase_otro_ninguna" xml:space="preserve"><value>Other document</value></data>
+  <data name="Clase_contrato_recibido" xml:space="preserve"><value>Contract · agreed amount</value></data>
+  <data name="Clase_contrato_emitido" xml:space="preserve"><value>Contract · agreed amount</value></data>
+  <data name="Clase_presupuesto_emitido" xml:space="preserve"><value>Quote sent</value></data>
+  <data name="Clase_presupuesto_recibido" xml:space="preserve"><value>Quote received</value></data>
+  <data name="Estado_procesado" xml:space="preserve"><value>Processed</value></data>
+  <data name="Estado_pendiente" xml:space="preserve"><value>Waiting to be read</value></data>
+  <data name="Estado_error" xml:space="preserve"><value>Read error</value></data>
+  <data name="Departamento_contabilidad" xml:space="preserve"><value>Accounting</value></data>
+  <data name="Departamento_legal" xml:space="preserve"><value>Legal</value></data>
+  <data name="Campo_contraparte" xml:space="preserve"><value>Other party</value></data>
+  <data name="Campo_nif_contraparte" xml:space="preserve"><value>Other party's tax ID</value></data>
+  <data name="Campo_numero" xml:space="preserve"><value>Number</value></data>
+  <data name="Campo_fecha" xml:space="preserve"><value>Date</value></data>
+  <data name="Campo_base_imponible" xml:space="preserve"><value>Taxable base</value></data>
+  <data name="Campo_iva" xml:space="preserve"><value>VAT</value></data>
+  <data name="Campo_total" xml:space="preserve"><value>Total</value></data>
+  <data name="Campo_aviso" xml:space="preserve"><value>Warning</value></data>
+  <data name="Campo_fecha_inicio" xml:space="preserve"><value>Start date</value></data>
+  <data name="Campo_renta_mensual" xml:space="preserve"><value>Monthly rent</value></data>
+  <data name="Campo_preaviso" xml:space="preserve"><value>Notice period</value></data>
+  <data name="Campo_fecha_entrega" xml:space="preserve"><value>Delivery date</value></data>
+  <data name="Campo_penalizacion" xml:space="preserve"><value>Penalty</value></data>
+  <data name="Campo_duracion" xml:space="preserve"><value>Duration</value></data>
+  <data name="Campo_respuesta_critica" xml:space="preserve"><value>Critical incident response</value></data>
+  <data name="ArchivarTitulo" xml:space="preserve"><value>Archive documents</value></data>
+  <data name="ArchivarIntro" xml:space="preserve"><value>Choose PDFs of invoices, contracts, quotes or receipts. The app reads their text, keeps the original on this computer and the local AI extracts the type, other party, date and amounts.</value></data>
+  <data name="ArchivarSoloAdministracion" xml:space="preserve"><value>Only administration can archive documents. Change the profile in “View as” to do it.</value></data>
+  <data name="ZonaTitulo" xml:space="preserve"><value>Choose PDFs or drag them here</value></data>
+  <data name="ZonaAyuda" xml:space="preserve"><value>Up to {0} MB per file and {1} files at a time. They are processed one by one.</value></data>
+  <data name="Cola" xml:space="preserve"><value>Documents in progress</value></data>
+  <data name="Progreso" xml:space="preserve"><value>Progress</value></data>
+  <data name="Paginas" xml:space="preserve"><value>{0} p.</value></data>
+  <data name="Paso_EnCola" xml:space="preserve"><value>Queued</value></data>
+  <data name="Paso_Leyendo" xml:space="preserve"><value>Reading the PDF</value></data>
+  <data name="Paso_Guardando" xml:space="preserve"><value>Saving</value></data>
+  <data name="Paso_Clasificando" xml:space="preserve"><value>The AI is reading it</value></data>
+  <data name="Paso_Indexando" xml:space="preserve"><value>Preparing search</value></data>
+  <data name="Paso_Listo" xml:space="preserve"><value>Archived</value></data>
+  <data name="Paso_YaExistia" xml:space="preserve"><value>Already there</value></data>
+  <data name="Paso_Escaneado" xml:space="preserve"><value>No text</value></data>
+  <data name="Paso_Error" xml:space="preserve"><value>Error</value></data>
+  <data name="YaExistia" xml:space="preserve"><value>This document was already archived. It was not duplicated.</value></data>
+  <data name="Escaneado" xml:space="preserve"><value>This PDF is a scanned image with no text to read, so it was not archived. Reading scans (OCR) will come in a later version.</value></data>
+  <data name="NoSeArchivo" xml:space="preserve"><value>It was not archived.</value></data>
+  <data name="QuedoPendiente" xml:space="preserve"><value>The document was saved as pending: open it to read it with the AI again.</value></data>
+  <data name="VerDocumento" xml:space="preserve"><value>View document</value></data>
+  <data name="SinVector" xml:space="preserve"><value>{0} passages could not be prepared for search. Read the document again when Ollama is running.</value></data>
+  <data name="DemasiadosArchivos" xml:space="preserve"><value>Only {0} files are processed at a time; the rest were left out.</value></data>
+  <data name="ArchivoGrande" xml:space="preserve"><value>{0} is larger than {1} MB and was left out.</value></data>
+  <data name="NoEsPdf" xml:space="preserve"><value>The file is not a PDF.</value></data>
+  <data name="PdfConContrasena" xml:space="preserve"><value>The PDF is password protected. Remove the password and archive it again.</value></data>
+  <data name="PdfDanado" xml:space="preserve"><value>The PDF is damaged or cannot be opened.</value></data>
+  <data name="DocumentosTitulo" xml:space="preserve"><value>Your documents</value></data>
+  <data name="DocumentosIntro" xml:space="preserve"><value>Everything archived that your profile can see. Search by file name, party or number.</value></data>
+  <data name="FiltroTexto" xml:space="preserve"><value>Search</value></data>
+  <data name="FiltroTextoEjemplo" xml:space="preserve"><value>Arganzuela, 2026-031, contract…</value></data>
+  <data name="Anio" xml:space="preserve"><value>Year</value></data>
+  <data name="Todos" xml:space="preserve"><value>All</value></data>
+  <data name="Buscar" xml:space="preserve"><value>Search</value></data>
+  <data name="NumeroDocumentos" xml:space="preserve"><value>{0} documents</value></data>
+  <data name="SinResultados" xml:space="preserve"><value>No document matches that search.</value></data>
+  <data name="ArchivoVacioTitulo" xml:space="preserve"><value>The archive is empty</value></data>
+  <data name="ArchivoVacioTexto" xml:space="preserve"><value>When you archive your first PDF it will appear here, with its data already read.</value></data>
+  <data name="ArchivarDocumento" xml:space="preserve"><value>Archive document</value></data>
+  <data name="VolverADocumentos" xml:space="preserve"><value>Documents</value></data>
+  <data name="DocumentoNoDisponible" xml:space="preserve"><value>Document not available</value></data>
+  <data name="DocumentoNoDisponibleTexto" xml:space="preserve"><value>It does not exist or your profile is not allowed to see it.</value></data>
+  <data name="FragmentosBuscables" xml:space="preserve"><value>{0} of {1} passages searchable</value></data>
+  <data name="AbrirPdf" xml:space="preserve"><value>Open original PDF</value></data>
+  <data name="PdfNoEncontrado" xml:space="preserve"><value>The original PDF is no longer in the documents folder.</value></data>
+  <data name="LeerConIa" xml:space="preserve"><value>Read with the AI</value></data>
+  <data name="VolverALeer" xml:space="preserve"><value>Read again with the AI</value></data>
+  <data name="LeidoDeNuevo" xml:space="preserve"><value>Read again. Fields corrected by hand were not changed.</value></data>
+  <data name="BorrarDocumento" xml:space="preserve"><value>Delete document</value></data>
+  <data name="BorrarPregunta" xml:space="preserve"><value>Delete this document?</value></data>
+  <data name="BorrarExplicacion" xml:space="preserve"><value>The document, its data, its passages and the original PDF are deleted. The audit log keeps a record. This cannot be undone.</value></data>
+  <data name="BorrarDefinitivamente" xml:space="preserve"><value>Delete permanently</value></data>
+  <data name="Cancelar" xml:space="preserve"><value>Cancel</value></data>
+  <data name="DatosDelDocumento" xml:space="preserve"><value>Document data</value></data>
+  <data name="ConservarHasta" xml:space="preserve"><value>Keep until</value></data>
+  <data name="CamposExtraidos" xml:space="preserve"><value>Fields read</value></data>
+  <data name="CorregidoAMano" xml:space="preserve"><value>Corrected by hand</value></data>
+  <data name="Manual" xml:space="preserve"><value>Sample data</value></data>
+  <data name="TextoDelDocumento" xml:space="preserve"><value>Document text</value></data>
+  <data name="SinTexto" xml:space="preserve"><value>This document has no text.</value></data>
+  <data name="PaginaN" xml:space="preserve"><value>Page {0}</value></data>
+  <data name="ErrorSinRespuesta" xml:space="preserve"><value>SQL Server returned no answer. Check that the ai/ scripts have been run.</value></data>
+  <data name="ErrorTiempo" xml:space="preserve"><value>The answer took too long. The local model may be busy: try again in a moment.</value></data>
+  <data name="ErrorConexion" xml:space="preserve"><value>Cannot connect to SQL Server. Check that the service is running and that the connection in appsettings.json is correct.</value></data>
+  <data name="ErrorBaseDatos" xml:space="preserve"><value>The MnemosArchive database does not exist on this server. Run scripts\instalar.ps1.</value></data>
+  <data name="ErrorLogin" xml:space="preserve"><value>SQL Server does not accept your Windows user. The app connects with Windows authentication.</value></data>
+  <data name="ErrorModelo" xml:space="preserve"><value>SQL Server could not reach the local model. Check that Ollama and Caddy are running.</value></data>
+  <data name="ErrorPermiso" xml:space="preserve"><value>Your profile is not allowed to do this.</value></data>
+</root>

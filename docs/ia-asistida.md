@@ -4,7 +4,7 @@
 
 **Método de verificación común:** nada se dio por bueno sin ejecutarlo. Cada script se ejecutó con `sqlcmd -b` (se detiene al primer error), se revisó la salida y se añadieron pruebas automáticas (`tests/tests.sql`, `tests/tests_ia.sql`).
 
-Los casos de abajo son reales: en cuatro de ellos el código generado por la IA **falló al ejecutarse** y hubo que corregirlo.
+Los casos de abajo son reales: en ocho de ellos el código generado por la IA **falló al ejecutarse** y hubo que corregirlo.
 
 ---
 
@@ -114,7 +114,66 @@ Los casos de abajo son reales: en cuatro de ellos el código generado por la IA 
 
 **Qué se corrigió:** al ejecutar el RAG, cada respuesta empezaba con "Okay, let's see..." y tardaba entre 40 y 200 segundos; la de más de 230 segundos superó el límite de `sp_invoke_external_rest_endpoint` (**error 31629**). Añadir `/no_think` tampoco sirvió. Consultando el registro de Ollama se vio por qué: la etiqueta `qwen3:4b` apunta hoy a **`qwen3:4b-thinking-2507`**, una variante que razona siempre. Se cambió a **`qwen3:4b-instruct`** (sin razonamiento) en `archivo.config_ia`, y la limpieza de la respuesta se quedó solo con lo que va después de `</think>` por si alguien configura un modelo que razona.
 
-**Cómo se verificó:** volviendo a ejecutar `ai/08_rag.sql` y comprobando en `evidencias/ai_08_rag.txt` que las respuestas son directas, en español y con su cita.
+**Cómo se verificó:** volviendo a ejecutar el RAG (hoy `ai/09_rag.sql`) y comprobando en su evidencia que las respuestas son directas, en español y con su cita.
+
+---
+
+## Caso 9. Comprobar las cifras de la respuesta
+
+**Prompt (resumen):** "Haz que se pueda preguntar en lenguaje natural cuánto se ha pagado a un tercero y en qué fechas. El modelo no puede hacer las cuentas: que las haga SQL y que se compruebe que la respuesta no cambia ninguna cifra."
+
+**Respuesta de la IA:** el flujo entender → calcular → redactar (`ai/08_consultas_de_datos.sql`) y una función `fn_cifras_sin_respaldo` que sacaba cada número de la respuesta con `REGEXP_MATCHES` y lo convertía con la función escalar ya existente `fn_importe_texto` (que usa `REGEXP_REPLACE`).
+
+**Qué se aceptó:** el reparto de trabajo (el LLM solo produce un JSON con campos fijos y no escribe SQL) y la idea de comprobar cada número.
+
+**Qué se corrigió:** al probar la función, **el servicio de SQL Server se detuvo** ("Hit Fatal Error: Server is terminating", con volcado de memoria). Aislando la consulta se vio que bastaba con llamar a `fn_importe_texto` sobre la salida de `REGEXP_MATCHES`. La conversión se reescribió dentro de la propia función con `REPLACE` y `TRY_CAST`, sin funciones escalares ni regex anidadas. También falló la primera versión del resumen de datos con el error *Cannot perform an aggregate function on an expression containing an aggregate or a subquery*: el detalle de cada grupo se calcula ahora en un paso previo.
+
+**Cómo se verificó:** las pruebas 7 a 10 de `tests/tests_ia.sql`. La 9 comprueba que "150,00" se marca como inventada y que "145,20 EUR el 31/1/2026 [1]" pasa. Antes de tener Ollama se probó el flujo completo con un modelo simulado que devolvía a propósito una cifra falsa: la respuesta se descartó y se devolvieron los datos calculados.
+
+---
+
+## Caso 10. Fechas vacías que se convertían en 1900
+
+**Prompt (resumen):** "Haz una app en .NET 9 con Blazor para archivar PDFs, preguntar y ver los documentos, encima de los procedimientos que ya existen."
+
+**Respuesta de la IA:** la app (`app/`) y un recorrido automático con Playwright que archivaba PDFs, hacía preguntas y sacaba capturas de cada pantalla.
+
+**Qué se aceptó:** la app y el recorrido como forma de revisarla.
+
+**Qué se corrigió:** en las capturas aparecían documentos con fecha **1/1/1900** y una pregunta sin periodo que no encontraba nada. La causa estaba en el T-SQL generado antes: cuando el modelo devuelve `""` en un campo de fecha (el esquema le pide cadena vacía si no aparece), `TRY_CONVERT(date, '', 23)` no devuelve `NULL` sino **1900-01-01**. Afectaba a la extracción (`ai/07`) y al periodo de las preguntas de datos (`ai/08`). Se cambió a `TRY_CONVERT(date, NULLIF(TRIM(fecha), ''), 23)`. En el mismo recorrido se vio que los contratos salían en dos grupos (emitidos y recibidos) con la misma etiqueta: ahora un contrato es un contrato, lo firme quien lo firme.
+
+**Cómo se verificó:** reinstalando la base de datos y repitiendo el recorrido: las fechas que no aparecen se muestran como "—" y la pregunta sin periodo cuenta todo el archivo.
+
+---
+
+## Caso 11. "El doble" con cifras reales y respuesta falsa
+
+**Prueba (del usuario, en la app):** "¿Cuánto es el doble de lo que le he pagado a Tecnologías Arganzuela este año?"
+
+**Respuesta del sistema:** `72,60 EUR × 2 = 145,20 EUR`, marcada como "Cifras comprobadas". Es falsa: lo pagado es 145,20 € y el doble serían 290,40 €. El modelo multiplicó una sola factura y presentó el resultado como el doble del total.
+
+**Por qué pasó la comprobación:** `fn_cifras_sin_respaldo` solo mira que cada número exista en los datos calculados, y 72,60, 2 y 145,20 existen. Era el límite que ya estaba documentado: el número existe, pero no está en la frase correcta.
+
+**Qué se corrigió:** el modelo nunca opera con las cifras. Primera versión: si la pregunta pedía una cuenta, se respondía "Ese cálculo no lo hago". Después, a petición del usuario, se hizo bien: el intérprete devuelve la operación como datos (`operacion: multiplicar`, `valor: 2`, `sobre: pagado`) y la hace T-SQL (`fn_magnitud` + `usp_calcular_operacion`), con una lista cerrada (multiplicar, dividir, porcentaje, sumar, restar, media, comparar periodos). El modelo solo redacta, y se comprueba que la respuesta no trae cuentas propias (`fn_tiene_operacion`) y que contiene el resultado de SQL; si no, se usa una respuesta fija calculada por SQL. Lo que queda fuera de la lista se sigue respondiendo con "Ese cálculo no lo hago".
+
+**Cómo se verificó:** pruebas 9b (la frase exacta del modelo se detecta como cuenta) y 9c (el doble de lo pagado a Arganzuela en 2026 da 290,40 EUR; el 21 % de lo facturado a Pedro García, 1.012,20 EUR; dividir entre cero se rechaza) de `tests/tests_ia.sql`.
+
+---
+
+## Caso 12. "Prorrateado a 14 meses" respondido como un total
+
+**Prueba (del usuario, en la app):** "cuánto le he pagado a tecnlogias arganzuela, prorrateado a 14 meses".
+
+**Respuesta del sistema:** "145,20 EUR", marcada como "Cifras comprobadas". La cifra es real, pero no es lo que se preguntaba: el reparto en 14 meses son 10,37 EUR. qwen3:4b-instruct marcó `operacion: ninguna` porque "prorratear" no estaba entre los ejemplos del intérprete, y el respaldo por palabras tampoco la incluía. La pregunta se respondió en silencio como si no pidiera ninguna cuenta.
+
+**Qué se corrigió:**
+- `fn_operacion_por_reglas`: reglas sin IA (expresiones regulares) para las cuentas habituales: porcentaje, prorratear o repartir entre N, entre N meses, la mitad, el doble o el triple, multiplicado por N, N veces y la media. Si encajan, mandan sobre el modelo.
+- Si la pregunta trae un número que no es un año ni parte del nombre del tercero y no se sabe qué hacer con él, ya no se ignora: se responde "Ese cálculo no lo hago" y las cifras del archivo.
+- El intérprete tiene un ejemplo de prorrateo.
+
+**Cómo se verificó:** prueba 9d de `tests/tests_ia.sql` con la frase exacta del usuario, incluida la falta de ortografía.
+
+**Lección:** con un modelo pequeño, lo que importa no es que acierte siempre, sino que cuando falle no se responda otra cosa como si fuera correcta. Cada fallo visto se convierte en una regla o una prueba.
 
 ---
 

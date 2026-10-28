@@ -6,7 +6,7 @@
   Ejecuta, en orden:
     database\01 ... 11   base de datos, datos, objetos, seguridad, consultas, optimizacion
     tests\tests.sql      pruebas de la parte relacional
-    ai\01 ... 09         modelos, embeddings, busqueda, extraccion con IA y RAG  (salvo -SinIA)
+    ai\01 ... 10         modelos, embeddings, busqueda, extraccion con IA y RAG  (salvo -SinIA)
     tests\tests_ia.sql   pruebas de la parte de IA                                (salvo -SinIA)
   La salida de cada script se guarda en evidencias\<script>.txt
 

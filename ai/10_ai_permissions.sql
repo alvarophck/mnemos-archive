@@ -1,5 +1,5 @@
 /* =====================================================================
-   Mnemos Archive · ai/09_ai_permissions.sql
+   Mnemos Archive · ai/10_ai_permissions.sql
    Permisos para que contabilidad y legal puedan buscar y preguntar,
    y demostración de que el RAG respeta Row-Level Security:
    un usuario solo obtiene respuestas de los documentos que puede ver.
@@ -12,7 +12,8 @@ GO
 
 GRANT EXECUTE ON archivo.usp_buscar_semantica TO rol_contabilidad, rol_legal;
 GRANT EXECUTE ON archivo.usp_buscar_hibrida   TO rol_contabilidad, rol_legal;
-GRANT EXECUTE ON archivo.usp_preguntar        TO rol_contabilidad, rol_legal;
+GRANT EXECUTE ON archivo.usp_preguntar        TO rol_contabilidad, rol_legal;   -- el enrutador llama al resto
+GRANT EXECUTE ON archivo.usp_consultar_datos  TO rol_contabilidad, rol_legal;
 
 -- Usar el modelo de embeddings y llamar al endpoint del LLM
 GRANT EXECUTE ON EXTERNAL MODEL::modelo_embeddings TO rol_contabilidad, rol_legal, rol_administracion;

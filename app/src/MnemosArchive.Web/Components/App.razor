@@ -1,0 +1,43 @@
+@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <base href="/" />
+    @* El tema se aplica antes de pintar nada, para que no parpadee *@
+    <script>try { var t = localStorage.getItem("mnemos-tema"); if (t === "paper" || t === "night") document.documentElement.setAttribute("data-theme", t); } catch (e) { }</script>
+    <link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="@Assets["css/tokens.css"]" />
+    <link rel="stylesheet" href="@Assets["css/app.css"]" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <ImportMap />
+    <HeadOutlet @rendermode="ModoPagina" />
+</head>
+
+<body>
+    <Routes @rendermode="ModoPagina" PerfilCodigo="@perfil" />
+    <script src="_framework/blazor.web.js"></script>
+    <script src="@Assets["js/tema.js"]"></script>
+    <script src="@Assets["js/app.js"]"></script>
+</body>
+
+</html>
+
+@code {
+    [CascadingParameter] private HttpContext? HttpContext { get; set; }
+
+    private string perfil = "administracion";
+
+    // La página de error se pinta en estático (sin circuito), como en la plantilla de .NET
+    private IComponentRenderMode? ModoPagina =>
+        HttpContext?.AcceptsInteractiveRouting() == false ? null : InteractiveServer;
+
+    protected override void OnInitialized()
+    {
+        if (HttpContext is not null)
+            perfil = Preferencias.PerfilDe(HttpContext).Codigo();
+    }
+}

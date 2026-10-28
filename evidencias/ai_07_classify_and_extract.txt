@@ -9,7 +9,7 @@ documento_id nombre_archivo tipo estado
 (4 rows affected)
 documento_id nombre_archivo tipo direccion departamento tercero_enlazado similitud_tercero numero fecha_documento importe_total confianza aviso milisegundos_modelo respuesta_modelo
 ------------ -------------- ---- --------- ------------ ---------------- ----------------- ------ --------------- ------------- --------- ----- ------------------- ----------------
-19 escaneo-0001.pdf factura recibido contabilidad Transportes Henares S.L. 100 TH/2026/0912 2026-09-12 102.85 0.950 NULL 20645 {
+19 escaneo-0001.pdf factura recibido contabilidad Transportes Henares S.L. 100 TH/2026/0912 2026-09-12 102.85 0.950 NULL 21834 {
   "base_imponible": "85.00",
   "confianza": 0.95,
   "contraparte": "TRANSPORTES HENARES S.L.",
@@ -23,7 +23,7 @@ documento_id nombre_archivo tipo direccion departamento tercero_enlazado similit
 
 documento_id nombre_archivo tipo direccion departamento tercero_enlazado similitud_tercero numero fecha_documento importe_total confianza aviso milisegundos_modelo respuesta_modelo
 ------------ -------------- ---- --------- ------------ ---------------- ----------------- ------ --------------- ------------- --------- ----- ------------------- ----------------
-20 escaneo-0002.pdf presupuesto recibido contabilidad Papeler├¡a Chamber├¡ S.L. 100 PCH-311 2026-10-03 387.20 0.950 NULL 14668 {
+20 escaneo-0002.pdf presupuesto recibido contabilidad Papeler├¡a Chamber├¡ S.L. 100 PCH-311 2026-10-03 387.20 0.950 NULL 17948 {
   "base_imponible": "",
   "confianza": 0.95,
   "contraparte": "Papeler├¡a Chamber├¡ S.L.",
@@ -37,7 +37,7 @@ documento_id nombre_archivo tipo direccion departamento tercero_enlazado similit
 
 documento_id nombre_archivo tipo direccion departamento tercero_enlazado similitud_tercero numero fecha_documento importe_total confianza aviso milisegundos_modelo respuesta_modelo
 ------------ -------------- ---- --------- ------------ ---------------- ----------------- ------ --------------- ------------- --------- ----- ------------------- ----------------
-21 escaneo-0003.pdf factura recibido contabilidad Energ├¡a Clara S.A. 100 EC-7790415 2026-08-31 91.07 0.950 NULL 14621 {
+21 escaneo-0003.pdf factura recibido contabilidad Energ├¡a Clara S.A. 100 EC-7790415 2026-08-31 91.07 0.950 NULL 23261 {
   "base_imponible": "",
   "confianza": 0.95,
   "contraparte": "Energia Clara SA",
@@ -52,7 +52,7 @@ documento_id nombre_archivo tipo direccion departamento tercero_enlazado similit
 
 documento_id nombre_archivo tipo direccion departamento tercero_enlazado similitud_tercero numero fecha_documento importe_total confianza aviso milisegundos_modelo respuesta_modelo
 ------------ -------------- ---- --------- ------------ ---------------- ----------------- ------ --------------- ------------- --------- ----- ------------------- ----------------
-22 escaneo-0004.pdf recibo recibido contabilidad Caf├® Malasa├▒a S.L. 100 NULL 2026-10-08 484.00 0.950 NULL 12522 {
+22 escaneo-0004.pdf recibo recibido contabilidad Caf├® Malasa├▒a S.L. 100 NULL 2026-10-08 484.00 0.950 NULL 18165 {
   "base_imponible": "",
   "confianza": 0.95,
   "contraparte": "Caf├® Malasa├▒a S.L.",

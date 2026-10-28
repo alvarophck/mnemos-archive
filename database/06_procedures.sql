@@ -17,7 +17,8 @@ CREATE OR ALTER PROCEDURE archivo.usp_archivar_documento
     @departamento   varchar(20) = 'contabilidad',
     @paginas        smallint    = 1,
     @documento_id   int OUTPUT,
-    @ya_existia     bit OUTPUT
+    @ya_existia     bit OUTPUT,
+    @archivo_local  nvarchar(260) = NULL   -- nombre del PDF original guardado por la app
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -31,12 +32,16 @@ BEGIN
     SELECT @documento_id = documento_id FROM archivo.documentos WHERE hash_sha256 = @hash;
     IF @documento_id IS NOT NULL
     BEGIN
+        -- Ya estaba: si antes solo teníamos el texto, se le enlaza ahora el PDF original
+        IF @archivo_local IS NOT NULL
+            UPDATE archivo.documentos SET archivo_local = @archivo_local
+            WHERE documento_id = @documento_id AND archivo_local IS NULL;
         SET @ya_existia = 1;
         RETURN;
     END
 
-    INSERT INTO archivo.documentos (nombre_archivo, hash_sha256, departamento, paginas, texto)
-    VALUES (@nombre_archivo, @hash, @departamento, @paginas, @texto);
+    INSERT INTO archivo.documentos (nombre_archivo, hash_sha256, departamento, paginas, texto, archivo_local)
+    VALUES (@nombre_archivo, @hash, @departamento, @paginas, @texto, @archivo_local);
 
     SET @documento_id = SCOPE_IDENTITY();
     SET @ya_existia = 0;

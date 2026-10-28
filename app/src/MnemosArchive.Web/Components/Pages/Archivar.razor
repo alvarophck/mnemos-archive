@@ -1,0 +1,164 @@
+@page "/archivar"
+@using Microsoft.Extensions.Options
+@inject Archivador Archivador
+@inject IOptions<OpcionesArchivo> Opciones
+
+<PageTitle>@L["NavArchivar"] · Mnemos Archive</PageTitle>
+
+<div class="encabezado">
+    <h1 tabindex="-1">@L["ArchivarTitulo"]</h1>
+    <p>@L["ArchivarIntro"]</p>
+</div>
+
+@if (!Perfil.PuedeModificar())
+{
+    <p class="aviso"><Icono Nombre="info" /> <span>@L["ArchivarSoloAdministracion"]</span></p>
+}
+else
+{
+    <div class="zona @(encima ? "encima" : "")" @ondragenter="() => encima = true" @ondragleave="() => encima = false" @ondrop="() => encima = false">
+        <Icono Nombre="subir" />
+        <p><strong>@L["ZonaTitulo"]</strong></p>
+        <p class="muted pequeno">@string.Format(L["ZonaAyuda"], Opciones.Value.TamanoMaximoMb, MaximoArchivos)</p>
+        <InputFile OnChange="Elegidos" multiple accept=".pdf,application/pdf" disabled="@trabajando"
+                   aria-label="@L["ZonaTitulo"]" />
+    </div>
+
+    @if (descartados.Count > 0)
+    {
+        <div class="aviso" role="status" style="margin-top: var(--space-4)">
+            <Icono Nombre="alerta" />
+            <span>@string.Join(" ", descartados)</span>
+        </div>
+    }
+}
+
+<div aria-live="polite">
+    @if (cola.Count > 0)
+    {
+        <h2 class="visually-hidden">@L["Cola"]</h2>
+        <ol class="cola" style="margin-top: var(--space-5)">
+            @foreach (var e in cola)
+            {
+                <li class="tarjeta elemento aparece">
+                    <div class="elemento-cabecera">
+                        <span class="mono">@e.Nombre</span>
+                        <span class="mono muted pequeno">@Preferencias.Tamano(e.Tamano)@(e.Paginas > 0 ? $" · {string.Format(L["Paginas"], e.Paginas)}" : "")</span>
+                    </div>
+
+                    @if (!e.Terminado || e.Paso == PasoArchivado.Listo)
+                    {
+                        <ol class="pasos" aria-label="@L["Progreso"]">
+                            @foreach (var paso in Pasos)
+                            {
+                                <li class="@EstadoPaso(e, paso)" aria-current="@(e.Paso == paso ? "step" : null)">@L[$"Paso_{paso}"]</li>
+                            }
+                        </ol>
+                    }
+
+                    @switch (e.Paso)
+                    {
+                        case PasoArchivado.Listo when e.Clasificacion is { } c:
+                            <dl class="datos-leidos">
+                                <div><dt>@L["ColTipo"]</dt><dd>@L[$"Tipo_{c.Tipo}"]@(c.Direccion is null ? "" : $" · {L[$"Direccion_{c.Direccion}"]}")</dd></div>
+                                <div><dt>@L["ColTercero"]</dt><dd>@(c.Tercero ?? L["SinEnlazar"])</dd></div>
+                                <div><dt>@L["ColFecha"]</dt><dd class="mono">@Preferencias.Fecha(c.Fecha)</dd></div>
+                                <div><dt>@L["ColImporte"]</dt><dd class="mono">@Preferencias.Importe(c.Importe, "EUR")</dd></div>
+                                <div><dt>@L["Confianza"]</dt><dd class="mono">@(c.Confianza?.ToString("P0", CultureInfo.CurrentCulture) ?? "—")</dd></div>
+                            </dl>
+                            @if (c.Aviso is not null)
+                            {
+                                <p class="aviso pequeno"><Icono Nombre="alerta" /> <span>@c.Aviso</span></p>
+                            }
+                            @if (e.SinVector > 0)
+                            {
+                                <p class="aviso pequeno"><Icono Nombre="alerta" /> <span>@string.Format(L["SinVector"], e.SinVector)</span></p>
+                            }
+                            <p><a href="@($"/documentos/{e.DocumentoId}")">@L["VerDocumento"]</a></p>
+                            break;
+
+                        case PasoArchivado.YaExistia:
+                            <p class="aviso pequeno"><Icono Nombre="info" /> <span>@L["YaExistia"] <a href="@($"/documentos/{e.DocumentoId}")">@L["VerDocumento"]</a></span></p>
+                            break;
+
+                        case PasoArchivado.Escaneado:
+                            <p class="aviso pequeno"><Icono Nombre="info" /> <span>@L["Escaneado"]</span></p>
+                            break;
+
+                        case PasoArchivado.Error:
+                            <div class="error pequeno" role="alert">
+                                <Icono Nombre="alerta" />
+                                <span>
+                                    <strong>@L["NoSeArchivo"]</strong>
+                                    @(e.ErrorClave is not null ? L[e.ErrorClave] : e.ErrorSql)
+                                    @if (e.DocumentoId is { } id)
+                                    {
+                                        <text> </text><a href="@($"/documentos/{id}")">@L["QuedoPendiente"]</a>
+                                    }
+                                </span>
+                            </div>
+                            break;
+                    }
+                </li>
+            }
+        </ol>
+    }
+</div>
+
+@code {
+    [CascadingParameter] private Perfil Perfil { get; set; }
+
+    private const int MaximoArchivos = 20;
+    private static readonly PasoArchivado[] Pasos =
+        [PasoArchivado.Leyendo, PasoArchivado.Guardando, PasoArchivado.Clasificando, PasoArchivado.Indexando, PasoArchivado.Listo];
+
+    private readonly List<ElementoArchivado> cola = [];
+    private readonly List<string> descartados = [];
+    private bool trabajando;
+    private bool encima;
+
+    private async Task Elegidos(InputFileChangeEventArgs args)
+    {
+        encima = false;
+        descartados.Clear();
+        var maximo = Opciones.Value.TamanoMaximoMb * 1024L * 1024L;
+
+        // Se leen ya: el navegador solo deja leer los archivos mientras dura este evento
+        var pendientes = new List<(ElementoArchivado Elemento, byte[] Contenido)>();
+        foreach (var archivo in args.GetMultipleFiles(MaximoArchivos + 1))
+        {
+            if (pendientes.Count >= MaximoArchivos)
+            {
+                descartados.Add(string.Format(L["DemasiadosArchivos"], MaximoArchivos));
+                break;
+            }
+            if (archivo.Size > maximo)
+            {
+                descartados.Add(string.Format(L["ArchivoGrande"], archivo.Name, Opciones.Value.TamanoMaximoMb));
+                continue;
+            }
+            using var lectura = archivo.OpenReadStream(maximo);
+            using var memoria = new MemoryStream();
+            await lectura.CopyToAsync(memoria);
+            var elemento = new ElementoArchivado(Path.GetFileName(archivo.Name), archivo.Size);
+            pendientes.Add((elemento, memoria.ToArray()));
+            cola.Insert(0, elemento);
+        }
+
+        // De uno en uno: el modelo local atiende una petición cada vez
+        trabajando = true;
+        StateHasChanged();
+        foreach (var (elemento, contenido) in pendientes.AsEnumerable().Reverse())
+            await Archivador.ProcesarAsync(elemento, contenido, () => InvokeAsync(StateHasChanged));
+        trabajando = false;
+    }
+
+    private static string EstadoPaso(ElementoArchivado e, PasoArchivado paso)
+    {
+        if (e.Paso == PasoArchivado.Listo)
+            return "hecho";
+        if (e.Paso == paso)
+            return "actual";
+        return (int)paso < (int)e.Paso ? "hecho" : "";
+    }
+}

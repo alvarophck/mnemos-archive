@@ -99,7 +99,7 @@ Lee el documento y extrae sus datos. Reglas:
            @contraparte = NULLIF(LTRIM(RTRIM(contraparte)), N''),
            @nif         = UPPER(REPLACE(REPLACE(NULLIF(LTRIM(RTRIM(nif_contraparte)), N''), '-', ''), ' ', '')),
            @numero      = NULLIF(LTRIM(RTRIM(numero)), N''),
-           @fecha       = TRY_CONVERT(date, fecha, 23),
+           @fecha       = TRY_CONVERT(date, NULLIF(TRIM(fecha), ''), 23),   -- '' no es 1900-01-01: es que no aparece
            @base        = archivo.fn_importe_texto(base_imponible),
            @iva         = archivo.fn_importe_texto(iva),
            @total       = archivo.fn_importe_texto(total),

@@ -1,0 +1,82 @@
+﻿Se cambi├│ el contexto de la base de datos a 'MnemosArchive'.
+--- usr_contable pregunta por el preaviso del alquiler (es un contrato: no lo ve)
+1_pregunta
+----------
+┬┐Con cu├ínto tiempo de antelaci├│n tengo que avisar si quiero dejar la oficina?
+
+2_fuente archivo pagina similitud fragmento documento_id fragmento_completo
+-------- ------- ------ --------- --------- ------------ ------------------
+1 presupuesto-vallecas-fase2.pdf 1 0.4484 PRESUPUESTO P-2026-024 ┬À 01/10/2026
+ De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+ Fase 2 de se├▒al├®tica:  14 PRESUPUESTO P-2026-024 ┬À 01/10/2026
+De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+Fase 2 de se├▒al├®tica: dise├▒o de la se├▒alizaci├│n interior de 3 edificios de viviendas y planos de evacuaci├│n.
+Plazo: 10 semanas. Validez: 45 d├¡as.
+Base impon
+2 presupuesto-cafe-malasana-web.pdf 1 0.4193 PRESUPUESTO P-2026-019 ┬À 02/09/2026
+ De: Estudio ├ümbar S.L. ┬À Para: Caf├® Malasa├▒a S.L.
+ Proyecto: tienda online de caf├®  13 PRESUPUESTO P-2026-019 ┬À 02/09/2026
+De: Estudio ├ümbar S.L. ┬À Para: Caf├® Malasa├▒a S.L.
+Proyecto: tienda online de caf├® en grano con pasarela de pago y 20 fichas de producto.
+Plazo de entrega: 8 semanas desde la aceptaci├│n.
+Validez de la oferta: 30 d├¡as.
+
+3_contexto_enviado_al_modelo
+----------------------------
+[1] presupuesto-vallecas-fase2.pdf ┬À p. 1
+PRESUPUESTO P-2026-024 ┬À 01/10/2026
+De: Estudio ├ümbar S.L. ┬À Para: Construcciones Vallecas S.A.
+Fase 2 de se├▒al├®tica: dise├▒o de la se├▒alizaci├│n interior de 3 edificios de viviendas y planos de evacuaci├│n.
+Plazo:
+
+4_respuesta camino modelo milisegundos
+----------- ------ ------ ------------
+No lo encuentro en los documentos. documentos qwen3:4b-instruct 23848
+
+--- usr_legal hace la misma pregunta (s├¡ ve los contratos)
+1_pregunta
+----------
+┬┐Con cu├ínto tiempo de antelaci├│n tengo que avisar si quiero dejar la oficina?
+
+2_fuente archivo pagina similitud fragmento documento_id fragmento_completo
+-------- ------- ------ --------- --------- ------------ ------------------
+1 contrato-alquiler-oficina.pdf 1 0.5664 os los cinco primeros d├¡as de cada mes.
+ [p├ígina 2]
+ Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+ Cl├íusula 4. P 15 os los cinco primeros d├¡as de cada mes.
+[p├ígina 2]
+Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+Cl├íusula 4. Preaviso: cualquiera de las partes podr├í resolver el contrato avisando con dos meses de antelaci├│n por escrito.
+Cl├íusula 5. Actualizaci├│
+2 contrato-alquiler-oficina.pdf 1 0.4883 CONTRATO DE ARRENDAMIENTO DE LOCAL DE OFICINA
+ N┬║ CA-2025-118 ┬À Madrid, 15 de diciembre de 2025
+ Arrendador: Inmobiliari 15 CONTRATO DE ARRENDAMIENTO DE LOCAL DE OFICINA
+N┬║ CA-2025-118 ┬À Madrid, 15 de diciembre de 2025
+Arrendador: Inmobiliaria Retiro S.L., NIF B85678912.
+Arrendatario: Estudio ├ümbar S.L., NIF B12345674.
+Objeto: local de 65 m2 en Calle del Pez 12, bajo, 28004
+3 contrato-senaletica-vallecas.pdf 1 0.4720 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+ [p├ígina 2]
+ Cl├íusula 3. Penalizaci├│n: por cada s 16 entregar├ín antes del 30 de junio de 2026, antes del inicio del verano.
+[p├ígina 2]
+Cl├íusula 3. Penalizaci├│n: por cada semana de retraso en la entrega se descontar├í un 2 % del precio, hasta un m├íximo del 10 %.
+Cl├íusula 4. Propiedad intelectual: el cliente
+4 nda-laura-mendez.pdf 1 0.4621 ACUERDO DE CONFIDENCIALIDAD
+ N┬║ NDA-2026-007 ┬À 1 de junio de 2026
+ Partes: Estudio ├ümbar S.L. (NIF B12345674) y Laura M├® 17 ACUERDO DE CONFIDENCIALIDAD
+N┬║ NDA-2026-007 ┬À 1 de junio de 2026
+Partes: Estudio ├ümbar S.L. (NIF B12345674) y Laura M├®ndez Ortega (NIF 50123456K), ilustradora colaboradora.
+Las partes se obligan a no divulgar la informaci├│n de clientes a la que tengan a
+
+3_contexto_enviado_al_modelo
+----------------------------
+[1] contrato-alquiler-oficina.pdf ┬À p. 1
+os los cinco primeros d├¡as de cada mes.
+[p├ígina 2]
+Cl├íusula 3. Fianza: dos mensualidades, 1.900,00 EUR.
+Cl├íusula 4. Preaviso: cualquiera de las partes podr├í resolver el contrato avisando con dos meses de antelaci
+
+4_respuesta camino modelo milisegundos
+----------- ------ ------ ------------
+Debo avisar con dos meses de antelaci├│n si quiero dejar la oficina [1]. documentos qwen3:4b-instruct 19980
+

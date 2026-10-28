@@ -1,0 +1,139 @@
+@page "/documentos"
+@inject ArchivoDb Db
+
+<PageTitle>@L["NavDocumentos"] · Mnemos Archive</PageTitle>
+
+<div class="encabezado">
+    <h1 tabindex="-1">@L["DocumentosTitulo"]</h1>
+    <p>@L["DocumentosIntro"]</p>
+</div>
+
+<form class="filtros" @onsubmit="Cargar" @onsubmit:preventDefault role="search">
+    <div class="campo">
+        <label for="buscar">@L["FiltroTexto"]</label>
+        <input id="buscar" type="search" @bind="texto" placeholder="@L["FiltroTextoEjemplo"]" />
+    </div>
+    <div class="campo">
+        <label for="tipo">@L["ColTipo"]</label>
+        <select id="tipo" @bind="tipo" @bind:after="Cargar">
+            <option value="">@L["Todos"]</option>
+            @foreach (var t in Tipos)
+            {
+                <option value="@t">@L[$"Tipo_{t}"]</option>
+            }
+        </select>
+    </div>
+    <div class="campo">
+        <label for="anio">@L["Anio"]</label>
+        <select id="anio" @bind="anio" @bind:after="Cargar">
+            <option value="">@L["Todos"]</option>
+            @foreach (var a in anios)
+            {
+                <option value="@a">@a</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="boton">@L["Buscar"]</button>
+</form>
+
+<div aria-live="polite" style="margin-top: var(--space-5)">
+    @if (error is not null)
+    {
+        <div class="error" role="alert"><Icono Nombre="alerta" /> <span>@error</span></div>
+    }
+    else if (filas is null)
+    {
+        <p class="muted">@L["Cargando"]</p>
+    }
+    else if (filas.Count == 0 && SinFiltros)
+    {
+        <section class="vacio">
+            <Memo />
+            <h2>@L["ArchivoVacioTitulo"]</h2>
+            <p>@L["ArchivoVacioTexto"]</p>
+            @if (Perfil.PuedeModificar())
+            {
+                <a class="boton-primario" href="/archivar">@L["ArchivarDocumento"]</a>
+            }
+        </section>
+    }
+    else if (filas.Count == 0)
+    {
+        <p class="muted">@L["SinResultados"]</p>
+    }
+    else
+    {
+        <p class="muted pequeno" style="margin-bottom: var(--space-3)">@string.Format(L["NumeroDocumentos"], filas.Count)</p>
+        <div class="tabla-contenedor">
+            <table class="apilable">
+                <caption class="visually-hidden">@L["DocumentosTitulo"]</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">@L["ColFecha"]</th>
+                        <th scope="col" class="numero">@L["ColImporte"]</th>
+                        <th scope="col">@L["ColDocumento"]</th>
+                        <th scope="col">@L["ColTipo"]</th>
+                        <th scope="col">@L["ColTercero"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in filas)
+                    {
+                        <tr>
+                            <td class="fecha">@Preferencias.Fecha(d.Fecha)</td>
+                            <td class="numero">@Preferencias.Importe(d.Importe, d.Moneda)</td>
+                            <td class="ancha">
+                                <a class="mono" href="@($"/documentos/{d.DocumentoId}")">@d.NombreArchivo</a>
+                                @if (d.Estado != "procesado")
+                                {
+                                    <span class="insignia" style="margin-left: var(--space-2)">@L[$"Estado_{d.Estado}"]</span>
+                                }
+                            </td>
+                            <td>@L[$"Tipo_{d.Tipo}"]@(d.Direccion is null ? "" : $" · {L[$"Direccion_{d.Direccion}"]}")</td>
+                            <td>@(d.Tercero ?? "—")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@code {
+    [CascadingParameter] private Perfil Perfil { get; set; }
+
+    private static readonly string[] Tipos = ["factura", "contrato", "presupuesto", "recibo", "otro", "sin_clasificar"];
+
+    private IReadOnlyList<FilaDocumento>? filas;
+    private IReadOnlyList<int> anios = [];
+    private string? texto;
+    private string? tipo;
+    private string? anio;
+    private string? error;
+
+    private bool SinFiltros => string.IsNullOrWhiteSpace(texto) && string.IsNullOrEmpty(tipo) && string.IsNullOrEmpty(anio);
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            anios = await Db.AniosAsync(Perfil);
+        }
+        catch (ArchivoException) { /* el error se enseña al cargar la lista */ }
+        await Cargar();
+    }
+
+    private async Task Cargar()
+    {
+        error = null;
+        try
+        {
+            filas = await Db.ListarAsync(new FiltroDocumentos(texto, string.IsNullOrEmpty(tipo) ? null : tipo,
+                                                             int.TryParse(anio, out var a) ? a : null), Perfil);
+        }
+        catch (ArchivoException ex)
+        {
+            error = ex.Clave is not null ? L[ex.Clave] : ex.MensajeSql;
+        }
+    }
+}

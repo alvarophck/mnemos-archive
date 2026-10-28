@@ -1,0 +1,85 @@
+@inherits LayoutComponentBase
+@inject NavigationManager Nav
+
+<a class="saltar" href="#contenido">@L["SaltarAlContenido"]</a>
+
+<header class="cabecera">
+    <div class="cabecera-interior">
+        <a class="marca" href="/">
+            <Logo />
+            <span>Mnemos Archive</span>
+        </a>
+
+        <nav class="navegacion" aria-label="@L["NavegacionPrincipal"]">
+            <NavLink href="/" Match="NavLinkMatch.All">@L["NavPreguntar"]</NavLink>
+            <NavLink href="/archivar">@L["NavArchivar"]</NavLink>
+            <NavLink href="/documentos">@L["NavDocumentos"]</NavLink>
+        </nav>
+
+        <div class="ajustes">
+            <label>
+                <span class="etiqueta">@L["VerComo"]</span>
+                <select value="@Perfil.Codigo()" @onchange="CambiarPerfil" aria-describedby="ayuda-perfil">
+                    <option value="administracion">@L["PerfilAdministracion"]</option>
+                    <option value="contabilidad">@L["PerfilContabilidad"]</option>
+                    <option value="legal">@L["PerfilLegal"]</option>
+                </select>
+            </label>
+            <span id="ayuda-perfil" class="visually-hidden">@L["AyudaPerfil"]</span>
+
+            <label>
+                <span class="visually-hidden">@L["Idioma"]</span>
+                <select value="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" @onchange="CambiarIdioma">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                </select>
+            </label>
+
+            <button type="button" class="boton-tema" data-accion="tema"
+                    data-prefijo="@L["Tema"]" data-nombre-sistema="@L["TemaSistema"]"
+                    data-nombre-paper="Paper" data-nombre-night="Night archive"
+                    aria-label="@L["Tema"]" title="@L["Tema"]">
+                <Icono Nombre="tema" />
+            </button>
+        </div>
+    </div>
+</header>
+
+<main id="contenido" class="principal">
+    @if (Perfil != Perfil.Administracion)
+    {
+        <p class="aviso pequeno" style="margin-bottom: var(--space-5)">
+            <Icono Nombre="info" />
+            <span>@string.Format(L["AvisoPerfil"], NombrePerfil)</span>
+        </p>
+    }
+    @Body
+</main>
+
+<footer class="pie">
+    <p class="muted pequeno">@L["Pie"]</p>
+</footer>
+
+<div id="blazor-error-ui" role="alert" class="error" style="display:none; position:fixed; bottom:16px; left:16px; right:16px; z-index:20">
+    <Icono Nombre="alerta" />
+    <span>@L["ErrorConexionApp"] <a href="" class="reload">@L["Recargar"]</a></span>
+</div>
+
+@code {
+    [CascadingParameter] private Perfil Perfil { get; set; }
+
+    private string NombrePerfil => Perfil switch
+    {
+        Perfil.Contabilidad => L["PerfilContabilidad"],
+        Perfil.Legal => L["PerfilLegal"],
+        _ => L["PerfilAdministracion"],
+    };
+
+    private void CambiarPerfil(ChangeEventArgs e) =>
+        Nav.NavigateTo($"/preferencias/perfil?valor={Uri.EscapeDataString(e.Value?.ToString() ?? "")}&volver={Volver()}", forceLoad: true);
+
+    private void CambiarIdioma(ChangeEventArgs e) =>
+        Nav.NavigateTo($"/preferencias/idioma?valor={Uri.EscapeDataString(e.Value?.ToString() ?? "es")}&volver={Volver()}", forceLoad: true);
+
+    private string Volver() => Uri.EscapeDataString("/" + Nav.ToBaseRelativePath(Nav.Uri));
+}
